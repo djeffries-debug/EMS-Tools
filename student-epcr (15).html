@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dixie Technical College EMS Programs – Student ePCR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000000; --ink-2:#4d4f50; --paper:#f0f1f1; --sheet:#ffffff; --line:#d1d3d4; --dtc-gray:#d1d3d4; --dtc-black:#000000;
+  --blue:#d1d3d4; --blue-soft:#e8e9ea; --blue-deep:#000000; --red:#b3261e; --red-soft:#fbeaea;
+  --amber:#8a5a00; --amber-soft:#fff4dc; --green:#1f6f43; --green-soft:#e5f3ea;
+  --f:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --fc:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--ink:#e6ebf1;--ink-2:#a7b3c1;--paper:#0f151c;--sheet:#17202a;--line:#2c3947;
+  --blue:#d1d3d4;--blue-soft:#2a2d2f;--blue-deep:#000000;--red:#f08b84;--red-soft:#3a1d1c;--amber:#f2c261;--amber-soft:#35290f;--green:#79d19f;--green-soft:#15301f;}
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 var(--f)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+/* Top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:#d1d3d4;color:#000;display:flex;align-items:center;gap:14px;padding:10px 18px;flex-wrap:wrap}
+.top h1{font:700 1.15rem/1 var(--fc);margin:0;letter-spacing:.01em;display:flex;align-items:center;gap:10px}
+.star{width:26px;height:26px;flex:none}
+.top .sp{flex:1}
+.lvl{display:flex;border:1.5px solid #000;border-radius:6px;overflow:hidden}
+.lvl button{background:transparent;border:0;color:#000;padding:6px 12px;cursor:pointer;font-weight:600}
+.lvl button[aria-pressed="true"]{background:#000;color:#fff}
+.tbtn{background:#fff;border:1.5px solid #000;color:#000;border-radius:6px;padding:6px 12px;cursor:pointer;font-weight:600}
+.tbtn:hover{background:#f0f1f1}
+.save-state{font-size:.85rem;opacity:.85}
+
+.mast{background:var(--blue-deep);color:#fff;border-bottom:6px solid #d1d3d4}
+.mast-in{max-width:1440px;margin:0 auto;padding:22px 20px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.mast img{height:56px;width:auto;display:block}
+.mast .college{font:700 clamp(1.5rem,3.2vw,2.3rem)/1 var(--fc);letter-spacing:.005em;margin:0}
+.mast .prog{font:500 1.05rem/1.3 var(--f);color:var(--dtc-gray);margin:4px 0 0}
+.mast .doc{margin-left:auto;text-align:right;border-left:2px solid var(--dtc-gray);padding-left:16px}
+.mast .doc b{display:block;font:700 1.15rem/1.2 var(--fc)}
+.mast .doc span{font-size:.92rem;color:var(--dtc-gray)}
+@media (max-width:760px){.mast .doc{margin-left:0;text-align:left;border-left:0;padding-left:0}}
+.warn{background:var(--amber-soft);color:var(--amber);border-bottom:1px solid var(--line);padding:8px 18px;font-size:.92rem}
+
+/* Layout */
+.wrap{display:grid;grid-template-columns:220px minmax(0,1fr) 300px;gap:20px;max-width:1440px;margin:0 auto;padding:20px}
+nav.sections{position:sticky;top:78px;align-self:start}
+nav.sections ol{list-style:none;margin:0;padding:0;counter-reset:s}
+nav.sections li{counter-increment:s}
+nav.sections a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:6px;color:var(--ink);text-decoration:none;font-weight:500}
+nav.sections a::before{content:counter(s);font:600 .8rem/1 var(--fc);width:22px;height:22px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);color:var(--ink-2);flex:none}
+nav.sections a.done::before{background:var(--green);border-color:var(--green);color:#fff}
+nav.sections a.flag::before{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+nav.sections a:hover{background:var(--blue-soft)}
+
+main section{background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin-bottom:18px}
+main h2{font:700 1.3rem/1.2 var(--fc);margin:0 0 4px}
+.hint{color:var(--ink-2);font-size:.9rem;margin:0 0 14px;max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px 14px}
+.grid.w2{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+label.f{display:flex;flex-direction:column;gap:4px;font:600 .85rem/1.2 var(--fc);color:var(--ink-2)}
+label.f.full{grid-column:1/-1}
+.req::after{content:" *";color:var(--red)}
+input[type=text],input[type=number],input[type=time],input[type=date],select,textarea{
+  border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--sheet);width:100%;font-weight:400;font-size:.97rem;color:var(--ink)}
+textarea{min-height:80px;resize:vertical;line-height:1.5}
+fieldset{border:1px solid var(--line);border-radius:6px;padding:10px 14px;margin:14px 0 0}
+legend{font:600 .95rem var(--fc);padding:0 6px}
+.checks{display:flex;flex-wrap:wrap;gap:6px 18px}
+.checks label{display:flex;align-items:center;gap:6px;font-size:.95rem}
+h3{font:600 1.05rem var(--fc);margin:18px 0 8px}
+
+/* Tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top}
+th{font:600 .8rem var(--fc);color:var(--ink);background:var(--paper);white-space:nowrap}
+@media (prefers-color-scheme:light){th{background:#e6e7e8}}
+td input,td select{padding:6px;font-size:.9rem}
+/* Keep every table field wide enough to see what is typed */
+td input[type=text]{min-width:120px}
+td input[data-c="bp"]{min-width:96px;width:96px}
+td input[type=number]{min-width:60px}
+td input[type=time]{min-width:112px}
+td select{min-width:120px}
+#vitalsTbl td select{min-width:58px}
+td.gcs{font-weight:700;text-align:center}
+.abn{background:var(--red-soft)!important;border-color:var(--red)!important}
+.addrow{margin-top:10px;background:var(--blue-soft);color:var(--ink);border:1.5px dashed var(--ink-2);border-radius:6px;padding:7px 14px;cursor:pointer;font-weight:600}
+.del{background:none;border:0;color:var(--red);cursor:pointer;font-size:1.2rem;line-height:1}
+
+.sys{display:grid;grid-template-columns:150px 150px 1fr;gap:8px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.sys b{font:600 .95rem var(--fc);padding-top:8px}
+.tmpl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.tmpl button{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer;font-weight:600;font-size:.88rem}
+.aemt{display:none}
+body.lvl-aemt .aemt{display:block}
+body.lvl-aemt .aemt-inline{display:inline-flex}
+.aemt-inline{display:none}
+.tag{font:600 .72rem var(--fc);background:var(--blue);color:#000;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.hidden{display:none!important}
+
+/* QA rail */
+aside.qa{position:sticky;top:78px;align-self:start;background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:16px;max-height:calc(100vh - 100px);overflow:auto}
+.qa h2{font:700 1.1rem var(--fc);margin:0 0 2px}
+.meter{height:8px;background:var(--paper);border-radius:4px;overflow:hidden;margin:8px 0 4px}
+.meter i{display:block;height:100%;background:var(--green);width:0;transition:width .3s}
+.qa ul{list-style:none;padding:0;margin:12px 0 0}
+.qa li{font-size:.88rem;padding:8px 10px;border-radius:6px;margin-bottom:6px;border-left:4px solid}
+.qa li.r{background:var(--red-soft);border-color:var(--red)}
+.qa li.a{background:var(--amber-soft);border-color:var(--amber)}
+.qa li.g{background:var(--green-soft);border-color:var(--green)}
+.qa li a{color:inherit;font-weight:600}
+.qa .why{display:block;color:var(--ink-2);margin-top:2px}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{background:var(--blue);color:#000;border:1.5px solid #000;border-radius:6px;padding:10px 16px;font-weight:600;cursor:pointer}
+.btn.alt{background:var(--sheet);color:var(--ink);border:1.5px solid var(--ink-2)}
+.btn.danger{background:var(--sheet);color:var(--red);border:1.5px solid var(--red)}
+
+.must{color:var(--red);font-weight:700}
+.phi{background:var(--red-soft);border-left:5px solid var(--red);border-radius:6px;padding:12px 14px;margin:0 0 16px;max-width:75ch}
+.phi b{color:var(--red)}
+.phi p{margin:6px 0 0;font-size:.93rem}
+.ecg{border:1px solid var(--line);border-radius:6px;padding:12px;margin-top:12px}
+.ecgc{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--line);touch-action:none;cursor:crosshair}
+.ecgok{display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-weight:600}
+.ecgok.bad{color:var(--red)}
+#crewWrap:has(tbody:empty),#prxWrap:has(tbody:empty),#srxWrap:has(tbody:empty){display:none}
+#report{display:none}
+.sigwrap{margin-top:14px}
+.sigpad{display:block;width:100%;max-width:560px;height:160px;background:#fff;border:1.5px dashed var(--ink-2);border-radius:6px;touch-action:none;cursor:crosshair}
+.sigpad.signed{border-style:solid;border-color:var(--green)}
+.sigbar{display:flex;gap:12px;align-items:center;margin-top:6px;flex-wrap:wrap;max-width:560px}
+.sigbar .hint{margin:0}
+.sigline{max-width:560px;border-top:1.5px solid var(--ink);margin-top:-1px;padding-top:4px;font:600 .8rem var(--fc);color:var(--ink-2)}
+@media (max-width:1180px){.wrap{grid-template-columns:200px minmax(0,1fr)}aside.qa{grid-column:1/-1;position:static;max-height:none;order:3}}
+@media (max-width:760px){
+  .wrap{grid-template-columns:1fr;padding:12px}
+  nav.sections{position:static}
+  nav.sections ol{display:flex;overflow-x:auto;gap:4px}
+  nav.sections a{white-space:nowrap}
+  .sys{grid-template-columns:1fr}
+}
+@media print{
+  body{background:#fff;color:#000}
+  .mast,.top,.warn,.wrap{display:none!important}
+  #report{display:block;font:11pt/1.4 var(--f);padding:0}
+  #report h1{font:700 16pt var(--fc);margin:0 0 4px}
+  #report .rhead{display:flex;align-items:center;gap:14px;border-bottom:3px solid #d1d3d4;padding-bottom:8px;margin-bottom:8px}
+  #report .rhead img{height:44px}
+  #report .rcol{font:700 13pt var(--fc);color:#000}
+  #report .rprog{font-size:10pt;color:#333}
+  #report .rdoc{margin-left:auto;text-align:right;font:700 12pt var(--fc)}
+  #report h2{font:700 12pt var(--fc);border-bottom:1.5px solid #d1d3d4;margin:14px 0 6px;padding-bottom:2px}
+  #report table{min-width:0;font-size:9.5pt}
+  #report th{background:#d1d3d4}
+  #report .kv{display:grid;grid-template-columns:repeat(3,1fr);gap:2px 16px}
+  #report .qa-out li{border:0;padding:2px 0}
+  #report pre{white-space:pre-wrap;font:inherit}
+  #report .sig-img{height:70px;display:block}
+  #report .sig-blank{height:50px}
+  #report .sig-line{border-top:1px solid #000;width:320px;font-size:9pt;padding-top:2px}
+  #report .sign-block{break-inside:avoid}
+  #report .ecg-r{break-inside:avoid;margin-top:8px}
+  #report .ecg-r img{display:block;max-width:100%;max-height:6.5in;margin-top:4px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="mast">
+  <div class="mast-in">
+    <img id="collegeLogo" alt="Dixie Technical College" hidden>
+    <div>
+      <p class="college">Dixie Technical College</p>
+      <p class="prog">Emergency Medical Services Programs</p>
+    </div>
+    <div class="doc"><b>Training Patient Care Report</b><span>EMT and Advanced EMT</span></div>
+  </div>
+</div>
+<header class="top">
+  <h1>
+    <svg class="star" viewBox="0 0 100 100" aria-hidden="true"><g fill="#000"><rect x="40" y="6" width="20" height="88" rx="2"/><rect x="40" y="6" width="20" height="88" rx="2" transform="rotate(60 50 50)"/><rect x="40" y="6" width="20" height="88" rx="2" transform="rotate(-60 50 50)"/></g><path d="M50 22v56M44 30c8 4 8 10 0 14s-8 10 0 14 8 10 0 14" stroke="#d1d3d4" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+    Student ePCR
+  </h1>
+  <div class="lvl" role="group" aria-label="Chart mode">
+    <button type="button" data-lvl="emt" aria-pressed="true">EMT</button>
+    <button type="button" data-lvl="aemt" aria-pressed="false">AEMT</button>
+    <button type="button" data-lvl="scn" aria-pressed="false" title="Lab scenario or skills practice">Scenario/Skills</button>
+  </div>
+  <span class="sp"></span>
+  <span class="save-state" id="saveState">Not saved yet</span>
+  <button class="tbtn" type="button" id="topPrint">Save as PDF</button>
+</header>
+<div class="warn" role="note"><strong>Training use only.</strong> <strong>A separate ePCR is required for each patient contact.</strong> Chart scenario patients or de-identified clinical patients. Do not enter real names, dates of birth, addresses, phone numbers, or record numbers.</div>
+
+<div class="wrap">
+<nav class="sections" aria-label="Chart sections">
+  <ol id="navList"></ol>
+</nav>
+
+<main>
+<form id="form" novalidate>
+
+<section id="s-run" data-title="Run & times">
+  <h2>Run information and times</h2>
+  <p class="hint">Times must be in order. Scene time is calculated from arrival on scene to departure.</p>
+  <div class="grid">
+    <label class="f"><span class="req">Student name</span><input type="text" name="student"></label>
+    <label class="f"><span>Course / section</span><input type="text" name="course"></label>
+    <label class="f"><span>Scenario / case #</span><input type="text" name="caseNo"></label>
+    <label class="f"><span>Date</span><input type="date" name="date"></label>
+    <label class="f"><span>Unit</span><input type="text" name="unit" placeholder="Medic 12"></label>
+    <label class="f"><span class="req">Dispatch reason</span><input type="text" name="dispatch" placeholder="Difficulty breathing"></label>
+    <label class="f"><span>Response mode</span><select name="respMode"><option></option><option>Emergent (lights/siren)</option><option>Non-emergent</option></select></label>
+    <label class="f"><span>Location type</span><select name="locType"><option></option><option>Residence</option><option>Street / highway</option><option>Public building</option><option>Workplace</option><option>School</option><option>Healthcare facility</option><option>Recreation / wilderness</option><option>Other</option></select></label>
+    <div style="grid-column:1/-1">
+      <div class="tbl" id="crewWrap"><table id="crewTbl" style="min-width:560px">
+        <thead><tr><th>Crew member name</th><th>Credential</th><th>Role on call</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <button type="button" class="addrow" data-add="crew">Add Crew Member <span style="color:var(--red)">*</span></button>
+    </div>
+  </div>
+  <h3>Times (24 hr)</h3>
+  <div class="grid">
+    <label class="f"><span>Dispatched</span><input type="time" name="tDispatch"></label>
+    <label class="f"><span>En route</span><input type="time" name="tEnroute"></label>
+    <label class="f"><span>On scene</span><input type="time" name="tScene"></label>
+    <label class="f"><span>Patient contact</span><input type="time" name="tContact"></label>
+    <label class="f"><span>Depart scene</span><input type="time" name="tDepart"></label>
+    <label class="f"><span>Arrive destination</span><input type="time" name="tArrive"></label>
+    <label class="f"><span>Transfer of care</span><input type="time" name="tTransfer"></label>
+    <label class="f"><span>In service</span><input type="time" name="tService"></label>
+  </div>
+</section>
+
+<section id="s-pt" data-title="Patient">
+  <h2>Patient</h2>
+  <div class="phi" role="note">
+    <b>Never enter a real patient's name or identifying information.</b>
+    <p>Identify the patient only as "Pt A," "Pt B," and so on. Do not use names, initials, dates of birth, addresses, phone numbers, medical record numbers, or photos, and do not name the patient anywhere in the narrative.</p>
+    <p>Patient privacy is protected by federal law (HIPAA). Charts you submit here leave the clinical site and are seen by instructors, so putting identifying information in them is a privacy breach. It can result in removal from your clinical site and from the program.</p>
+  </div>
+  <div class="grid">
+    <label class="f"><span>Patient ID</span><input type="text" name="ptId" placeholder="Pt A"></label>
+    <label class="f"><span class="req">Age</span><input type="number" name="age" min="0" max="120"></label>
+    <label class="f"><span>Age units</span><select name="ageUnit"><option>Years</option><option>Months</option><option>Days</option></select></label>
+    <label class="f"><span class="req">Gender (at birth)</span><select name="sex"><option></option><option>Male</option><option>Female</option><option>Other</option><option>Unknown</option></select></label>
+    <label class="f"><span>Weight</span><input type="number" name="wt" step="0.1" min="0"><small id="wtConv" class="hint" style="margin:0;font-family:var(--f)"></small></label>
+    <label class="f"><span>Weight units</span><select name="wtUnit"><option>kg</option><option>lbs</option></select></label>
+    <label class="f"><span>Pregnant</span><select name="preg"><option></option><option>No</option><option>Yes</option><option>Possible</option><option>N/A</option></select></label>
+  </div>
+</section>
+
+<section id="s-scene" data-title="Scene size-up">
+  <h2>Scene size-up</h2>
+  <div class="grid w2">
+    <label class="f"><span class="req">Scene safe?</span><select name="sceneSafe"><option></option><option>Yes</option><option>No – staged</option><option>Made safe by LE/Fire</option></select></label>
+    <label class="f"><span class="req">Nature of illness / mechanism of injury</span><select name="noiMoi"><option></option><option>Medical (NOI)</option><option>Trauma (MOI)</option><option>Both</option></select></label>
+    <label class="f"><span>Number of patients</span><input type="number" name="numPts" min="1" value="1"></label>
+    <label class="f"><span>Additional resources</span><input type="text" name="resources" placeholder="ALS, Fire, LE, air medical…"></label>
+    <label class="f full"><span>NOI / MOI details</span><input type="text" name="moiDetail" placeholder="e.g., restrained driver, ~40 mph frontal impact, airbag deployed, intrusion &gt;12 in"></label>
+  </div>
+  <fieldset><legend>Standard precautions</legend><div class="checks">
+    <label><input type="checkbox" name="ppe_gloves"> Gloves</label>
+    <label><input type="checkbox" name="ppe_eye"> Eye protection</label>
+    <label><input type="checkbox" name="ppe_mask"> Mask / N95</label>
+    <label><input type="checkbox" name="ppe_gown"> Gown</label>
+    <label><input type="checkbox" name="ppe_other" id="ppeOther"> Other</label>
+    <input type="text" name="ppe_otherTxt" id="ppeOtherTxt" aria-label="Other precautions" placeholder="Describe (e.g., SCBA, Tyvek suit, face shield)" style="max-width:320px" disabled>
+  </div></fieldset>
+</section>
+
+<section id="s-primary" data-title="Primary assessment">
+  <h2>Primary assessment</h2>
+  <p class="hint">Record your initial findings at patient contact. Add a reassessment row after every intervention and whenever the patient's condition changes.</p>
+  <h3 style="margin-top:0">Initial findings</h3>
+  <div class="grid w2">
+    <label class="f full"><span class="req">General impression</span><input type="text" name="genImp" placeholder="Age, position, level of distress, obvious life threats"></label>
+    <label class="f"><span class="req">Mental status (AVPU)</span><select name="avpu"><option></option><option>Alert</option><option>Verbal</option><option>Pain</option><option>Unresponsive</option></select></label>
+    <label class="f"><span>Orientation</span><select name="orient"><option></option><option>A&amp;O x4</option><option>A&amp;O x3</option><option>A&amp;O x2</option><option>A&amp;O x1</option><option>Not oriented</option></select></label>
+    <label class="f"><span class="req">Airway</span><select name="airway"><option></option><option>Patent</option><option>Partially obstructed</option><option>Obstructed</option><option>Maintained with adjunct</option></select></label>
+    <label class="f"><span class="req">Breathing</span><select name="breathing"><option></option><option>Adequate</option><option>Inadequate – labored</option><option>Inadequate – shallow</option><option>Absent</option></select></label>
+    <label class="f"><span class="req">Circulation / pulse</span><select name="circ"><option></option><option>Radial present, strong</option><option>Radial present, weak</option><option>Carotid only</option><option>Absent</option></select></label>
+    <label class="f"><span>Major bleeding</span><select name="bleed"><option></option><option>None</option><option>Controlled</option><option>Uncontrolled</option></select></label>
+    <label class="f"><span>Skin (color / temp / moisture)</span><input type="text" name="skinPrim" placeholder="Pale, cool, diaphoretic"></label>
+    <label class="f"><span class="req">Priority</span><select name="priority"><option></option><option>High – life threat / unstable</option><option>Moderate</option><option>Low – stable</option></select></label>
+  </div>
+  <div class="tbl" id="prxWrap" style="margin-top:14px"><table id="prxTbl">
+    <thead><tr><th>Time</th><th>AVPU</th><th>Orientation</th><th>Airway</th><th>Breathing</th><th>Circulation</th><th>Bleeding</th><th>Skin</th><th>Priority</th><th>Compared to last</th><th>What changed</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <button type="button" class="addrow" data-add="prx">Add primary reassessment</button>
+</section>
+
+<section id="s-hx" data-title="History">
+  <h2>Chief complaint and history</h2>
+  <div class="grid w2">
+    <label class="f full"><span class="req">Chief complaint (in patient's words when possible)</span><input type="text" name="cc"></label>
+  </div>
+  <h3>OPQRST</h3>
+  <div class="grid w2">
+    <label class="f"><span>Onset</span><input type="text" name="o"></label>
+    <label class="f"><span>Provocation / palliation</span><input type="text" name="p"></label>
+    <label class="f"><span>Quality</span><input type="text" name="q"></label>
+    <label class="f"><span>Region / radiation</span><input type="text" name="r"></label>
+    <label class="f"><span>Severity (0–10)</span><input type="number" name="s" min="0" max="10"></label>
+    <label class="f"><span>Time / duration</span><input type="text" name="t"></label>
+  </div>
+  <h3>SAMPLE</h3>
+  <div class="grid w2">
+    <label class="f"><span>Signs / symptoms</span><input type="text" name="sx"></label>
+    <label class="f"><span class="req">Allergies</span><input type="text" name="allergies" placeholder="NKDA if none"></label>
+    <label class="f"><span class="req">Medications</span><input type="text" name="meds"></label>
+    <label class="f"><span>Pertinent past history</span><input type="text" name="pmh"></label>
+    <label class="f"><span>Last oral intake</span><input type="text" name="lastOral"></label>
+    <label class="f"><span>Events leading up</span><input type="text" name="events"></label>
+    <label class="f full"><span>Pertinent negatives</span><input type="text" name="pertNeg" placeholder="Denies chest pain, denies LOC, denies nausea…"></label>
+  </div>
+</section>
+
+<section id="s-vitals" data-title="Vital signs">
+  <h2>Vital signs</h2>
+  <p class="hint"><span class="must">At least 2 full sets are required.</span> A full set is time, BP, HR, RR, SpO₂, GCS (E/V/M), and skin. Adult reference ranges flag in red. Reassess every 5 minutes for unstable patients and every 15 minutes for stable patients.</p>
+  <div class="tbl"><table id="vitalsTbl">
+    <thead><tr><th>Time</th><th>BP</th><th>HR</th><th>RR</th><th>SpO₂ %</th><th>EtCO₂</th><th>BGL</th><th>Temp °F</th><th>E</th><th>V</th><th>M</th><th>GCS</th><th>Pain</th><th>Skin</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <button type="button" class="addrow" data-add="vitals">Add vital set</button>
+</section>
+
+<section id="s-exam" data-title="Secondary exam">
+  <h2>Secondary assessment</h2>
+  <p class="hint">Mark each area assessed. Any abnormal finding needs a description. Use reassessments to show how findings change over the call.</p>
+  <h3 style="margin-top:0">Initial findings</h3>
+  <div class="grid"><label class="f"><span>Time performed</span><input type="time" name="secTime"></label></div>
+  <div id="sysList"></div>
+  <h3>Stroke screen (if indicated)</h3>
+  <div class="grid">
+    <label class="f"><span>Facial droop</span><select name="strFace"><option></option><option>Normal</option><option>Abnormal</option></select></label>
+    <label class="f"><span>Arm drift</span><select name="strArm"><option></option><option>Normal</option><option>Abnormal</option></select></label>
+    <label class="f"><span>Speech</span><select name="strSpeech"><option></option><option>Normal</option><option>Abnormal</option></select></label>
+    <label class="f"><span>Last known well</span><input type="time" name="lkw"></label>
+  </div>
+  <h3>Reassessments</h3>
+  <p class="hint">One row per body area rechecked. Recheck every abnormal finding, plus pulse, motor, and sensation after any splint or spinal motion restriction.</p>
+  <div class="tbl" id="srxWrap"><table id="srxTbl">
+    <thead><tr><th>Time</th><th>Body area</th><th>Status</th><th>Findings</th><th>Compared to last</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <button type="button" class="addrow" data-add="srx">Add secondary reassessment</button>
+</section>
+
+<section id="s-imp" data-title="Impression & differentials">
+  <h2>Field impression and differentials</h2>
+  <p class="hint"><span class="must">List at least three possibilities.</span> For each, write the findings that support it and the findings that argue against it. This is how you defend your working impression.</p>
+  <div class="grid w2">
+    <label class="f full"><span class="req">Primary field impression</span><input type="text" name="impression"></label>
+  </div>
+  <div class="tbl" style="margin-top:12px"><table id="ddxTbl">
+    <thead><tr><th>Possible condition</th><th>Supporting findings</th><th>Findings against</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <button type="button" class="addrow" data-add="ddx">Add differential</button>
+</section>
+
+<section id="s-tx" data-title="Interventions">
+  <h2>Interventions and medications</h2>
+  <p class="hint">Every medication needs dose, route, indication, and your reassessment of the patient's response. <span class="aemt-inline tag">AEMT options shown</span></p>
+  <div class="tbl"><table id="txTbl">
+    <thead><tr><th>Time</th><th>Category</th><th>Intervention / medication</th><th>Dose</th><th>Unit</th><th>Route</th><th>Indication</th><th>Response</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <button type="button" class="addrow" data-add="tx">Add intervention</button>
+
+  <h3>12-lead ECG</h3>
+  <p class="hint">If a 12-lead was acquired, upload a photo or screenshot of the tracing. EMTs and AEMTs acquire and transmit 12-leads; interpretation comes from a paramedic or physician, so record it only as they reported it.</p>
+  <div class="phi" role="note">
+    <b>Black out patient identifiers before submitting.</b>
+    <p>12-lead printouts and monitor screens show the patient's name, date of birth, age, and record number, usually across the top. After uploading, drag across those areas to cover them with black boxes.</p>
+  </div>
+  <div id="ecgList"></div>
+  <button type="button" class="addrow" id="ecgAdd">Upload 12-lead image</button>
+  <input type="file" id="ecgFile" accept="image/*" hidden>
+  <p class="hint" id="ecgMsg" role="status" style="margin-top:6px"></p>
+
+  <div class="aemt">
+    <h3>Intravenous Access</h3>
+    <div class="grid">
+      <label class="f"><span>Access</span><select name="ivType"><option></option><option>None</option><option>IV</option><option>IO</option></select></label>
+      <label class="f"><span>Location</span><select name="ivSide"><option></option><option>Left</option><option>Right</option><option>Other</option></select></label>
+      <label class="f"><span>Site</span><select name="ivSite"><option></option><option>Hand</option><option>Wrist</option><option>Forearm</option><option>AC/antecubital fossa</option><option>Foot</option><option>Leg</option><option>Neck</option><option>Scalp</option><option>Umbilical</option><option>Other</option></select></label>
+      <label class="f"><span>Gauge</span><select name="ivGauge"><option></option><option>14g</option><option>16g</option><option>18g</option><option>20g</option><option>22g</option><option>24g</option></select></label>
+      <label class="f"><span>Attempts</span><input type="number" name="ivAttempts" min="0"></label>
+      <label class="f"><span>Outcome</span><select name="ivOutcome"><option></option><option>Patent</option><option>Unsuccessful</option></select></label>
+      <label class="f"><span>Fluid</span><select name="ivFluid"><option></option><option>Normal saline</option><option>Lactated Ringer's</option><option>Saline lock</option></select></label>
+      <label class="f"><span>Total infused (mL)</span><input type="number" name="ivTotal" min="0"></label>
+    </div>
+    <h3>Intraosseous Access</h3>
+    <div class="grid">
+      <label class="f"><span>Location</span><select name="ioSide"><option></option><option>Left</option><option>Right</option><option>Other</option></select></label>
+      <label class="f"><span>Site</span><select name="ioSite"><option></option><option>Proximal tibia</option><option>Distal tibia</option><option>Proximal humerus</option><option>Distal femur</option><option>Other</option></select></label>
+      <label class="f"><span>Needle size</span><select name="ioNeedle"><option></option><option>15 mm</option><option>25 mm</option><option>45 mm</option></select></label>
+      <label class="f"><span>Did you aspirate marrow?</span><select name="ioAspirate"><option></option><option>Yes</option><option>No</option></select></label>
+      <label class="f"><span>Attempts</span><input type="number" name="ioAttempts" min="0"></label>
+      <label class="f"><span>Outcome</span><select name="ioOutcome"><option></option><option>Patent</option><option>Unsuccessful</option></select></label>
+      <label class="f"><span>Fluid</span><select name="ioFluid"><option></option><option>Normal saline</option><option>Lactated Ringer's</option><option>Flushed / locked</option></select></label>
+      <label class="f"><span>Total infused (mL)</span><input type="number" name="ioTotal" min="0"></label>
+    </div>
+  </div>
+</section>
+
+<section id="s-dispo" data-title="Transport & handoff">
+  <h2>Disposition, transport, and handoff</h2>
+  <div class="grid w2">
+    <label class="f"><span class="req">Disposition</span><select name="dispo"><option></option><option>Transported</option><option>Transferred to ALS / other unit</option><option>Refusal (AMA)</option><option>Treated, no transport</option><option>Dead on scene – no resuscitation</option><option>Cancelled / no patient</option></select></label>
+    <label class="f tr"><span>Destination</span><input type="text" name="dest"></label>
+    <label class="f tr"><span>Reason for destination</span><select name="destReason"><option></option><option>Closest facility</option><option>Specialty center (trauma / stroke / STEMI / burn / peds)</option><option>Patient choice</option><option>Protocol / medical direction</option><option>Diversion</option></select></label>
+    <label class="f tr"><span>Transport priority</span><select name="trPriority"><option></option><option>Emergent</option><option>Non-emergent</option></select></label>
+    <label class="f tr"><span>Patient position</span><select name="position"><option></option><option>Position of comfort</option><option>Fowler's / semi-Fowler's</option><option>Supine</option><option>Recovery (lateral)</option><option>Left lateral (pregnancy)</option><option>Spinal motion restriction</option></select></label>
+    <label class="f tr"><span>Change in condition during transport</span><select name="trChange"><option></option><option>Improved</option><option>Unchanged</option><option>Worsened</option></select></label>
+  </div>
+  <fieldset id="refusalBox" class="hidden"><legend>Refusal documentation</legend>
+    <p class="hint">A refusal is only valid if the patient has decision-making capacity and understands the risks.</p>
+    <div class="checks">
+      <label><input type="checkbox" name="ref_ao4"> A&amp;O x4, no signs of impairment</label>
+      <label><input type="checkbox" name="ref_adult"> Legal adult or emancipated minor</label>
+      <label><input type="checkbox" name="ref_risks"> Risks of refusal explained, including death</label>
+      <label><input type="checkbox" name="ref_understands"> Patient verbalized understanding</label>
+      <label><input type="checkbox" name="ref_callback"> Advised to call 911 or seek care if worse</label>
+      <label><input type="checkbox" name="ref_sign"> Signature and witness obtained</label>
+      <label><input type="checkbox" name="ref_medctrl"> Medical control contacted</label>
+    </div>
+  </fieldset>
+  <h3>Verbal handoff (MIST)</h3>
+  <div class="grid w2">
+    <label class="f"><span>Mechanism / medical complaint</span><input type="text" name="mist_m"></label>
+    <label class="f"><span>Injuries / illness found</span><input type="text" name="mist_i"></label>
+    <label class="f"><span>Signs (vitals trend)</span><input type="text" name="mist_s"></label>
+    <label class="f"><span>Treatment given</span><input type="text" name="mist_t"></label>
+    <label class="f"><span>Care transferred to</span><input type="text" name="handoffTo" placeholder="RN / MD / ALS crew"></label>
+  </div>
+</section>
+
+<section id="s-narr" data-title="Narrative">
+  <h2>Narrative</h2>
+  <p class="hint">Write so another provider could picture the call without having been there. Include pertinent negatives and every reassessment.</p>
+  <div class="tmpl">
+    <button type="button" data-tmpl="soap">Insert SOAP outline</button>
+    <button type="button" data-tmpl="chart">Insert CHART outline</button>
+    <button type="button" data-tmpl="dcharte">Insert DCHARTE outline</button>
+  </div>
+  <textarea name="narrative" id="narrative" style="min-height:280px"></textarea>
+  <p class="hint" id="wordCount" style="margin-top:6px">0 words</p>
+</section>
+
+<section id="s-sign" data-title="Preceptor sign-off">
+  <h2>Preceptor sign-off</h2>
+  <p class="hint">The preceptor reviews this chart with the student, then signs. If the chart is edited after signing, the signature is marked invalid and must be signed again.</p>
+  <div class="grid w2">
+    <label class="f"><span class="req">Preceptor name</span><input type="text" name="precName"></label>
+    <label class="f"><span class="req">Credential</span><select name="precCred"><option></option><option>EMT</option><option>AEMT</option><option>Paramedic</option><option>RN</option><option>Physician / PA / NP</option><option>Other</option></select></label>
+    <label class="f"><span>Certification / license #</span><input type="text" name="precLic"></label>
+    <label class="f"><span>Agency / facility</span><input type="text" name="precAgency"></label>
+    <label class="f"><span class="req">Date signed</span><input type="date" name="precDate"></label>
+  </div>
+  <fieldset><legend>Attestation</legend><div class="checks">
+    <label><input type="checkbox" name="precAttest"> I reviewed this patient care report with the student and it reflects the patient contact.</label>
+  </div></fieldset>
+  <div class="sigwrap">
+    <canvas class="sigpad" id="sigPad" aria-label="Preceptor signature pad. Sign with a finger, stylus, or mouse."></canvas>
+    <div class="sigline">Preceptor signature</div>
+    <div class="sigbar">
+      <button type="button" class="btn alt" id="sigClear">Clear signature</button>
+      <span class="hint" id="sigStatus">Sign with a finger, stylus, or mouse.</span>
+    </div>
+    <input type="hidden" name="precSig" id="precSig">
+    <input type="hidden" name="precSigHash" id="precSigHash">
+    <input type="hidden" name="precSigTime" id="precSigTime">
+  </div>
+</section>
+
+<section id="s-review" data-title="Review & submit">
+  <h2>Review and submit</h2>
+  <p class="hint">Fix red items before submitting. To turn in: save as PDF, then upload the PDF to the Canvas assignment. Download the chart file if you want to keep working on it later.</p>
+  <div class="actions">
+    <button type="button" class="btn" id="printBtn">Save as PDF</button>
+    <button type="button" class="btn alt" id="dlBtn">Download chart file</button>
+    <label class="btn alt" style="display:inline-flex;align-items:center">Open chart file<input type="file" id="loadFile" accept=".json,application/json" hidden></label>
+    <button type="button" class="btn alt" id="copyBtn">Copy narrative</button>
+    <button type="button" class="btn danger" id="clearBtn">Start new chart</button>
+  </div>
+  <p class="hint" id="actionMsg" role="status" style="margin-top:10px"></p>
+</section>
+</form>
+</main>
+
+<aside class="qa" aria-live="polite">
+  <h2>Chart check</h2>
+  <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+  <div class="hint" id="meterTxt" style="margin:0"></div>
+  <ul id="qaList"></ul>
+</aside>
+</div>
+
+<div id="report"></div>
+
+<script>
+(function(){
+"use strict";
+const KEY="student-epcr-draft-v1";
+/* Official college logo: paste a data: URI (e.g. data:image/png;base64,...) supplied by DTC marketing. Leave empty to show the name only. */
+const LOGO_SRC="";
+if(LOGO_SRC){const l=document.getElementById("collegeLogo");l.src=LOGO_SRC;l.hidden=false;}
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const form=$("#form");
+form.addEventListener("submit",e=>e.preventDefault());
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- Section nav ---------- */
+const sections=$$("main section");
+$("#navList").innerHTML=sections.map(s=>`<li><a href="#${s.id}" data-sec="${s.id}">${s.dataset.title}</a></li>`).join("");
+
+/* ---------- Body systems ---------- */
+const SYS=["Head / face","Eyes / pupils","Neck","Chest / lungs","Heart","Abdomen","Pelvis","Back / spine","Upper extremities","Lower extremities","Neuro (motor / sensory)","Skin"];
+$("#sysList").innerHTML=SYS.map((n,i)=>`<div class="sys"><b>${n}</b>
+<select name="sys${i}" aria-label="${n} status"><option>Not assessed</option><option>Normal</option><option>Abnormal</option></select>
+<input type="text" name="sysT${i}" aria-label="${n} findings" placeholder="Findings (DCAP-BTLS, breath sounds, PMS…)"></div>`).join("");
+
+/* ---------- Dynamic tables ---------- */
+const opts=a=>"<option></option>"+a.map(x=>`<option>${esc(x)}</option>`).join("");
+const gcsOpt=(n)=>`<option></option>`+Array.from({length:n},(_,i)=>`<option>${i+1}</option>`).join("");
+const EMT_TX={
+ "Airway / O₂":["Oxygen – nasal cannula","Oxygen – NRB","BVM ventilation","OPA","NPA","Suction","Abdominal thrusts / FBAO","Adjunct","Capnography"],
+ "Assessment":["1° Survey","2° Survey - Exam","APGAR","ECG","GCS","Glucometer","History","Neonatal Care","Pulse Oximetry","Vital Signs"],
+ "Bandage/Splint":["Direct Pressure","Sp Motion Restr","Splint","Tourniquet","Wound Pack / Hemostatic"],
+ "Cardiac":["Cardiovert","Chest Compressions","DEFIB/AED","TCP"],
+ "Medication":["Oral glucose","Aspirin","Epinephrine Auto-Injector","Naloxone","Nitroglycerin","Albuterol MDI","Activated charcoal"],
+ "OB":["Abnormal Delivery","Delivery"],
+ "Trauma / other":["Traction splint","Pelvic binder","Occlusive dressing","Cooling / warming","Blood glucose check","12-lead acquired & transmitted"]
+};
+const AEMT_TX={
+ "Airway / O₂":["Supraglottic airway","CPAP"],
+ "Medication":["Dextrose 10%","Glucagon","Albuterol SVN","Ipratropium","Epinephrine 1:1,000","Epinephrine 1:10,000","Epinephrine 1:100,000","Normal saline bolus","Nitrous oxide"]
+};
+function txOptions(sel){
+  const aemt=document.body.classList.contains("lvl-aemt");
+  let h="<option></option>";
+  for(const cat in EMT_TX){
+    let list=EMT_TX[cat].concat(aemt&&AEMT_TX[cat]?AEMT_TX[cat]:[]);
+    if(cat==="Medication") list=list.slice().sort((x,y)=>x.localeCompare(y,"en",{sensitivity:"base"})); // medications listed A–Z
+    h+=`<optgroup label="${cat}">`+list.map(x=>`<option${x===sel?" selected":""}>${x}</option>`).join("")+"</optgroup>";
+  }
+  h+=`<option value="Other"${sel==="Other"?" selected":""}>Other</option>`;
+  return h;
+}
+const ROW={
+ vitals:()=>`<td><input type="time" data-c="time"></td><td><input type="text" data-c="bp" placeholder="120/80" inputmode="text" autocomplete="off" aria-label="Blood pressure, systolic over diastolic"></td>
+ <td><input type="number" data-c="hr" style="width:64px"></td><td><input type="number" data-c="rr" style="width:56px"></td>
+ <td><input type="number" data-c="spo2" style="width:60px"></td><td><input type="number" data-c="etco2" style="width:60px"></td>
+ <td><input type="number" data-c="bgl" style="width:64px"></td><td><input type="number" step="0.1" data-c="temp" style="width:66px"></td>
+ <td><select data-c="e">${gcsOpt(4)}</select></td><td><select data-c="v">${gcsOpt(5)}</select></td><td><select data-c="m">${gcsOpt(6)}</select></td>
+ <td class="gcs">–</td><td><input type="number" data-c="pain" min="0" max="10" style="width:52px"></td>
+ <td><input type="text" data-c="skin" placeholder="PWD"></td><td><button type="button" class="del" aria-label="Remove row">×</button></td>`,
+ crew:()=>`<td><input type="text" data-c="name" placeholder="J. Smith"></td>
+ <td><select data-c="cred">${opts(["EMR","EMT","AEMT","Paramedic","Other"])}</select></td>
+ <td><div style="display:flex;gap:6px;flex-wrap:wrap"><select data-c="role" aria-label="Role on call">${opts(["Preceptor","Student","Crew member","Driver","Other"])}</select>
+ <select data-c="stu" class="hidden" aria-label="Student role"><option value="">Student role…</option><option>Observer</option><option>Team Member</option><option>Team Lead</option></select></div></td>
+ <td><button type="button" class="del" aria-label="Remove crew member">×</button></td>`,
+ prx:()=>`<td><input type="time" data-c="time"></td>
+ <td><select data-c="avpu">${opts(["Alert","Verbal","Pain","Unresponsive"])}</select></td>
+ <td><select data-c="orient">${opts(["A&O x4","A&O x3","A&O x2","A&O x1","Not oriented"])}</select></td>
+ <td><select data-c="airway">${opts(["Patent","Partially obstructed","Obstructed","Maintained with adjunct"])}</select></td>
+ <td><select data-c="breathing">${opts(["Adequate","Inadequate – labored","Inadequate – shallow","Absent"])}</select></td>
+ <td><select data-c="circ">${opts(["Radial present, strong","Radial present, weak","Carotid only","Absent"])}</select></td>
+ <td><select data-c="bleed">${opts(["None","Controlled","Uncontrolled"])}</select></td>
+ <td><input type="text" data-c="skin" placeholder="PWD" style="min-width:110px"></td>
+ <td><select data-c="priority">${opts(["High – life threat / unstable","Moderate","Low – stable"])}</select></td>
+ <td><select data-c="trend">${opts(["Improved","Unchanged","Worsened"])}</select></td>
+ <td><input type="text" data-c="note" style="min-width:180px"></td>
+ <td><button type="button" class="del" aria-label="Remove row">×</button></td>`,
+ srx:()=>`<td><input type="time" data-c="time"></td>
+ <td><select data-c="area">${opts(SYS.concat(["Stroke screen"]))}</select></td>
+ <td><select data-c="status">${opts(["Normal","Abnormal"])}</select></td>
+ <td><input type="text" data-c="find" style="min-width:220px"></td>
+ <td><select data-c="trend">${opts(["Improved","Unchanged","Worsened","New finding"])}</select></td>
+ <td><button type="button" class="del" aria-label="Remove row">×</button></td>`,
+ ddx:()=>`<td><input type="text" data-c="dx"></td><td><input type="text" data-c="for"></td><td><input type="text" data-c="against"></td><td><button type="button" class="del" aria-label="Remove row">×</button></td>`,
+ tx:(d={})=>`<td><input type="time" data-c="time"></td><td><select data-c="cat"><option></option><option>Airway / O₂</option><option>Assessment</option><option>Bandage/Splint</option><option>Cardiac</option><option>Medication</option><option>OB</option><option>Trauma / other</option></select></td>
+ <td><select data-c="item">${txOptions(d.item)}</select></td><td><input type="number" data-c="dose" step="any" min="0" inputmode="decimal" placeholder="0" aria-label="Dose amount" style="width:90px;min-width:90px"></td><td><select data-c="unit" aria-label="Unit" style="min-width:90px;width:90px"><option value="">Unit</option><option>mcg</option><option>mg</option><option>g</option><option>mL</option><option>L</option><option>L/min</option></select></td>
+ <td><select data-c="route"><option></option><option>PO</option><option>SL</option><option>IN</option><option>IM</option><option>IV</option><option>IO</option><option>Inhaled</option><option>N/A</option></select></td>
+ <td><input type="text" data-c="ind"></td><td><select data-c="resp"><option></option><option>Improved</option><option>Unchanged</option><option>Worsened</option></select></td>
+ <td><button type="button" class="del" aria-label="Remove row">×</button></td>`
+};
+const TBL={crew:"#crewTbl tbody",prx:"#prxTbl tbody",srx:"#srxTbl tbody",vitals:"#vitalsTbl tbody",ddx:"#ddxTbl tbody",tx:"#txTbl tbody"};
+function crewToggle(tr){ const r=tr.querySelector('[data-c="role"]'), s=tr.querySelector('[data-c="stu"]'); if(!r||!s) return;
+  const on=r.value==="Student"; s.classList.toggle("hidden",!on); if(!on) s.value=""; }
+form.addEventListener("change",e=>{ if(e.target.dataset.c==="role"){ const tr=e.target.closest("tr"); crewToggle(tr); if(e.target.value==="Student") tr.querySelector('[data-c="stu"]').focus(); } });
+function addRow(kind,data){
+  if(kind==="crew"&&data&&/ Student$/.test(data.cred||"")) data=Object.assign({},data,{cred:data.cred.replace(/ Student$/,"")}); // older "EMT Student" etc.
+  if(kind==="tx"&&data&&data.item){ /* map names used in older versions to current names */
+    const OLD={"Dextrose 10% IV":"Dextrose 10%","Glucagon IM":"Glucagon","Naloxone IV/IM":"Naloxone","Nitroglycerin SL":"Nitroglycerin","Albuterol nebulized":"Albuterol SVN","Ipratropium nebulized":"Ipratropium","Epinephrine 1 mg/mL IM":"Epinephrine 1:1,000","Direct pressure":"Direct Pressure","Spinal motion restriction":"Sp Motion Restr","DEFIB":"DEFIB/AED","Wound packing / hemostatic":"Wound Pack / Hemostatic","CPR":"Chest Compressions","AED – shock delivered":"DEFIB/AED","AED – no shock advised":"DEFIB/AED"};
+    let it=data.item.replace(/\s*\([^)]*\)/g,""); it=OLD[it]||it; data=Object.assign({},data,{item:it}); }
+  if(kind==="tx"&&data&&data.dose&&!data.unit){ const m=String(data.dose).match(/([\d.]+)\s*(mcg|mg|g|mL|L\/min|L)?/i);
+    if(m){ const u=m[2]?["mcg","mg","g","mL","L/min","L"].find(x=>x.toLowerCase()===m[2].toLowerCase()):""; data=Object.assign({},data,{dose:m[1],unit:u||""}); } else data=Object.assign({},data,{dose:""}); }
+  const tr=document.createElement("tr"); tr.innerHTML=ROW[kind](data||{});
+  $(TBL[kind]).appendChild(tr);
+  if(data) tr.querySelectorAll("[data-c]").forEach(el=>{ if(data[el.dataset.c]!=null) el.value=data[el.dataset.c]; });
+  if(kind==="vitals") flagVitals(tr);
+  if(kind==="crew") crewToggle(tr);
+  return tr;
+}
+$$("[data-add]").forEach(b=>b.addEventListener("click",()=>{const tr=addRow(b.dataset.add);tr.querySelector("input,select").focus();changed();}));
+form.addEventListener("click",e=>{ if(e.target.classList.contains("del")){ e.target.closest("tr").remove(); changed(); }});
+
+/* ---------- Vitals flags (adult) ---------- */
+function isAdult(){ const a=+val("age"), u=val("ageUnit"); return a>=18 && u==="Years"; }
+function flagVitals(tr){
+  const g=c=>tr.querySelector(`[data-c="${c}"]`);
+  const e=+g("e").value||0,v=+g("v").value||0,m=+g("m").value||0;
+  tr.querySelector(".gcs").textContent=(e&&v&&m)?e+v+m:"–";
+  const adult=isAdult();
+  const set=(c,bad)=>g(c).classList.toggle("abn",adult&&bad);
+  const n=c=>g(c).value===""?null:+g(c).value;
+  const bp=(g("bp").value.match(/(\d+)\s*\/\s*(\d+)/)||[]);
+  set("bp",bp.length&&(+bp[1]<90||+bp[1]>=180||+bp[2]>=110));
+  set("hr",n("hr")!==null&&(n("hr")<60||n("hr")>100));
+  set("rr",n("rr")!==null&&(n("rr")<12||n("rr")>20));
+  set("spo2",n("spo2")!==null&&n("spo2")<94);
+  set("etco2",n("etco2")!==null&&(n("etco2")<35||n("etco2")>45));
+  set("bgl",n("bgl")!==null&&(n("bgl")<70||n("bgl")>250));
+  set("temp",n("temp")!==null&&(n("temp")<95||n("temp")>=100.4));
+}
+
+/* ---------- Level toggle ---------- */
+let MODE="emt";
+function isScenario(){ return MODE==="scn"; }
+const modeLabel=()=>({emt:"EMT",aemt:"AEMT",scn:"Scenario/Skills"}[MODE]);
+function setLevel(l){
+  MODE=["emt","aemt","scn"].includes(l)?l:"emt";
+  /* Scenario/Skills shows the full EMT + AEMT option set */
+  document.body.classList.toggle("lvl-aemt",MODE!=="emt"); document.body.classList.toggle("scn",MODE==="scn");
+  l=MODE;
+  $$("[data-lvl]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lvl===l));
+  $$("#txTbl tbody tr").forEach(tr=>{const s=tr.querySelector('[data-c="item"]');const v=s.value;s.innerHTML=txOptions(v);});
+}
+$$("[data-lvl]").forEach(b=>b.addEventListener("click",()=>{setLevel(b.dataset.lvl);changed();}));
+
+/* ---------- Narrative templates ---------- */
+const T={
+ soap:"S: \nO: \nA: \nP: \n",
+ chart:"C (Chief complaint): \nH (History – OPQRST / SAMPLE, pertinent negatives): \nA (Assessment – primary, secondary, vitals): \nR (Rx – treatments and patient response): \nT (Transport – destination, position, changes, handoff): \n",
+ dcharte:"D (Dispatch / scene description): \nC (Chief complaint): \nH (History): \nA (Assessment): \nR (Rx / treatment): \nT (Transport): \nE (Exceptions – refusals, delays, unusual circumstances): \n"
+};
+$$("[data-tmpl]").forEach(b=>b.addEventListener("click",()=>{
+  const n=$("#narrative"); n.value=(n.value.trim()?n.value.trimEnd()+"\n\n":"")+T[b.dataset.tmpl]; n.focus(); changed();
+}));
+
+/* ---------- State ---------- */
+function val(n){const el=form.elements[n]; if(!el) return ""; return el.type==="checkbox"?el.checked:el.value.trim();}
+function rows(kind){return $$(TBL[kind]+" tr").map(tr=>{const o={};tr.querySelectorAll("[data-c]").forEach(el=>o[el.dataset.c]=el.value.trim());return o;});}
+function collect(){
+  const f={}; Array.from(form.elements).forEach(el=>{ if(!el.name) return; f[el.name]=el.type==="checkbox"?el.checked:el.value; });
+  return {v:1,level:MODE,fields:f,crew:rows("crew"),ecg:ECG.map(({id,img,time,trans,dest,by,interp,ok})=>({id,img,time,trans,dest,by,interp,ok})),prx:rows("prx"),srx:rows("srx"),vitals:rows("vitals"),ddx:rows("ddx"),tx:rows("tx"),saved:new Date().toISOString()};
+}
+function restore(d){
+  if(!d||!d.fields) return;
+  setLevel(d.scenario?"scn":(d.level||"emt"));
+  if(d.fields&&d.fields.ivGauge){ const gv=String(d.fields.ivGauge); d.fields.ivGauge=/^\d+$/.test(gv)?gv+"g":(/^\d+g$/.test(gv)?gv:""); }
+  for(const k in d.fields){const el=form.elements[k]; if(!el||el.type==="file") continue; if(el.type==="checkbox") el.checked=!!d.fields[k]; else el.value=d.fields[k];}
+  for(const k in TBL) $(TBL[k]).innerHTML="";
+  (d.vitals||[]).forEach(r=>addRow("vitals",r));
+  (d.ddx||[]).forEach(r=>addRow("ddx",r));
+  (d.tx||[]).forEach(r=>addRow("tx",r));
+  (d.prx||[]).filter(r=>Object.values(r).some(Boolean)).forEach(r=>addRow("prx",r)); // blank starter rows from older drafts are dropped
+  (d.srx||[]).filter(r=>Object.values(r).some(Boolean)).forEach(r=>addRow("srx",r));
+  let crew=(d.crew||[]).filter(r=>Object.values(r).some(Boolean));
+  if(!crew.length&&d.fields.crew) crew=String(d.fields.crew).split(/\n+/).map(x=>x.trim()).filter(Boolean).map(x=>({name:x,cred:"",role:""})); // older text-box crew list
+  crew.forEach(r=>addRow("crew",r));
+  ECG=(d.ecg||[]).map(e=>Object.assign({},e)); for(const k in ecgSess) delete ecgSess[k]; renderECG();
+}
+let t;
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(collect()));$("#saveState").textContent="Draft saved "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});}
+  catch(e){$("#saveState").textContent="Autosave unavailable – download the chart file to keep your work";}
+}
+function changed(){clearTimeout(t);t=setTimeout(()=>{save();runQA();},400);}
+form.addEventListener("input",e=>{ const tr=e.target.closest("#vitalsTbl tr"); if(tr) flagVitals(tr);
+  if(["age","ageUnit"].includes(e.target.name)) $$("#vitalsTbl tbody tr").forEach(flagVitals);
+  if(e.target.name==="dispo") toggleDispo(); changed(); });
+form.addEventListener("change",e=>{ const tr=e.target.closest("#vitalsTbl tr"); if(tr) flagVitals(tr); if(e.target.name==="dispo") toggleDispo(); changed(); });
+function wtText(){const w=parseFloat(val("wt")),u=val("wtUnit")||"kg"; if(!(w>0)) return "";
+  return u==="lbs"?`${w} lbs (${(w/2.2046).toFixed(1)} kg)`:`${w} kg (${(w*2.2046).toFixed(1)} lbs)`;}
+function updWt(){const w=parseFloat(val("wt")),u=val("wtUnit")||"kg";$("#wtConv").textContent=w>0?(u==="lbs"?`= ${(w/2.2046).toFixed(1)} kg`:`= ${(w*2.2046).toFixed(1)} lbs`):"";}
+form.addEventListener("input",e=>{ if(e.target.name==="wt"||e.target.name==="wtUnit") updWt(); });
+form.addEventListener("change",e=>{ if(e.target.name==="wt"||e.target.name==="wtUnit") updWt(); });
+function togglePPE(){const on=$("#ppeOther").checked,t=$("#ppeOtherTxt");t.disabled=!on;if(!on)t.value="";}
+form.addEventListener("change",e=>{ if(e.target.id==="ppeOther"){togglePPE(); if(e.target.checked) $("#ppeOtherTxt").focus();} });
+function toggleDispo(){
+  const d=val("dispo");
+  $("#refusalBox").classList.toggle("hidden",d!=="Refusal (AMA)");
+  $$(".tr").forEach(el=>el.classList.toggle("hidden",!(d===""||d==="Transported"||d.startsWith("Transferred"))));
+}
+
+/* ---------- QA checks ---------- */
+const mins=s=>{if(!s) return null;const [h,m]=s.split(":").map(Number);return h*60+m;};
+function runQA(){
+  const out=[]; const add=(lvl,sec,msg,why)=>out.push({lvl,sec,msg,why});
+  // required fields
+  const req=$$("label.f .req").map(sp=>sp.closest("label").querySelector("input,select,textarea")).filter(el=>el&&!el.closest(".hidden"));
+  const missing=req.filter(el=>!String(el.value).trim());
+  const secMissing={};
+  missing.forEach(el=>{const s=el.closest("section");(secMissing[s.id]=secMissing[s.id]||[]).push(el.closest("label").querySelector("span").textContent);});
+  for(const s in secMissing) add("r",s,`${sections.find(x=>x.id===s).dataset.title}: missing ${secMissing[s].join(", ")}`,"Required fields are the minimum data set for a defensible PCR.");
+
+  const CREW=rows("crew").filter(r=>r.name||r.cred);
+  if(!CREW.length) add("r","s-run","No crew members listed.","Click Add Crew Member for everyone on the call, including yourself and your preceptor. The PCR must show who provided care.");
+  CREW.forEach((r,i)=>{ if(r.role==="Student"&&!r.stu) add("r","s-run",`Crew member ${i+1}: choose Observer, Team Member, or Team Lead.`,"Your level of participation shows what you actually did on the call and is used to track your team-lead contacts."); });
+  CREW.forEach((r,i)=>{ if(!r.name||!r.cred) add("r","s-run",`Crew member ${i+1}: add ${!r.name?"name":"credential"}.`,"Each crew member needs a name and credential so the level of care on the call is documented."); });
+
+  // time order
+  const order=[["tDispatch","Dispatched"],["tEnroute","En route"],["tScene","On scene"],["tContact","Patient contact"],["tDepart","Depart scene"],["tArrive","Arrive destination"],["tTransfer","Transfer of care"],["tService","In service"]];
+  let last=null,lastN="";
+  for(const [k,n] of order){const m=mins(val(k)); if(m===null) continue;
+    if(last!==null && m<last && last-m<720) add("r","s-run",`${n} time is earlier than ${lastN}.`,"Out-of-order times are a common legal and QA problem. Check each timestamp.");
+    last=m; lastN=n;}
+  const sc=mins(val("tScene")),dp=mins(val("tDepart"));
+  if(sc!==null&&dp!==null){ let st=dp-sc; if(st<0) st+=1440;
+    if(st>10) add("a","s-run",`Scene time is ${st} minutes.`,"For trauma, stroke, and STEMI, the goal is 10 minutes or less on scene. If you exceeded it, explain why in the narrative (extrication, access, etc.).");}
+
+  // PPE
+  if(!val("ppe_gloves")) add("a","s-scene","No standard precautions documented.","Gloves at minimum. Document the PPE you used for every patient contact.");
+
+  if(val("ppe_other")&&!val("ppe_otherTxt")) add("a","s-scene","\"Other\" precaution checked but not described.","Name the PPE used so the record shows what protection was in place.");
+
+  const pid=val("ptId");
+  if(pid&&!/^(pt|patient)\s*[a-z0-9]{0,3}$/i.test(pid)) add("r","s-pt","Patient ID should be \"Pt A,\" \"Pt B,\" etc.","Anything else may identify a real patient. Names and initials are protected health information.");
+  if(/\b(Mr|Mrs|Ms|Miss)\.?\s+[A-Z][a-z]+/.test(val("narrative"))) add("r","s-narr","Narrative may contain a patient's name.","Refer to the patient as \"the patient\" or \"Pt A.\" A name in the narrative is protected health information.");
+
+  // primary
+  if(val("avpu")&&val("avpu")!=="Alert"&&(val("airway")==="Patent")) add("a","s-primary","Altered mental status with a patent airway – document how you are protecting it.","A patient at P or U cannot reliably protect their airway. Positioning, suction, and adjuncts should appear in interventions.");
+  if(val("bleed")==="Uncontrolled") add("r","s-primary","Uncontrolled bleeding documented.","Life-threatening hemorrhage must be controlled in the primary assessment. Document what you did and whether it worked.");
+
+  // vitals
+  const V=rows("vitals").filter(r=>r.time||r.bp||r.hr);
+  const dispo=val("dispo");
+  const FULL={time:"time",bp:"BP",hr:"HR",rr:"RR",spo2:"SpO₂",e:"GCS eye",v:"GCS verbal",m:"GCS motor",skin:"skin"};
+  const fullSets=V.filter(r=>Object.keys(FULL).every(k=>r[k]&&(k!=="bp"||/\d+\s*\/\s*\d+/.test(r[k]))));
+  if(fullSets.length<2) add("r","s-vitals",`${fullSets.length} full set${fullSets.length===1?"":"s"} of vitals – at least 2 required.`,"One set is only a snapshot. Two complete sets are the minimum to show a trend and prove whether the patient is improving or declining.");
+  V.forEach((r,i)=>{const miss=Object.keys(FULL).filter(k=>!r[k]).map(k=>FULL[k]); if(miss.length&&miss.length<Object.keys(FULL).length) add("a","s-vitals",`Vital set ${i+1} is incomplete: missing ${miss.join(", ")}.`,"A partial set does not count toward the 2 required full sets.");
+    else if(r.bp&&!/\d+\s*\/\s*\d+/.test(r.bp)) add("a","s-vitals",`Vital set ${i+1}: BP must be systolic/diastolic (e.g., 128/84).`,"Both numbers are needed to calculate pulse pressure and recognize shock or increased ICP.");});
+  const unstable=/High/.test(val("priority"));
+  const vt=V.map(r=>mins(r.time)).filter(x=>x!==null);
+  for(let i=1;i<vt.length;i++){let gap=vt[i]-vt[i-1]; if(gap<0) gap+=1440;
+    const lim=unstable?5:15;
+    if(gap>lim){add("a","s-vitals",`${gap} min between vital sets ${i} and ${i+1}.`,`${unstable?"High-priority (unstable)":"Stable"} patients are reassessed about every ${lim} minutes.`);break;}}
+  V.forEach((r,i)=>{ if(r.e&&r.v&&r.m){const g=+r.e+ +r.v+ +r.m; if(g<=8) add("r","s-vitals",`GCS ${g} in vital set ${i+1}.`,"GCS 8 or less indicates the patient likely cannot protect their airway. Airway management should be documented.");}});
+  if(!isAdult()&&val("age")) add("g","s-vitals","Pediatric patient – adult vital sign flags are turned off.","Compare vitals to age-based normal ranges; pediatric ranges vary by age.");
+
+  // reassessments
+  const PR=rows("prx").filter(r=>Object.values(r).some(Boolean));
+  const SR=rows("srx").filter(r=>Object.values(r).some(Boolean));
+  const TXall=rows("tx").filter(r=>r.item);
+  const contact=mins(val("tContact"));
+  const after=(t0,t)=>{ if(t0===null||t===null) return false; let d=t-t0; if(d<0) d+=1440; return d<720; };
+  if(!PR.length&&(dispo==="Transported"||dispo.startsWith("Transferred"))) add("a","s-primary","No primary reassessment documented.","Mental status and ABCs must be rechecked after every intervention and during transport. Without it, the chart cannot show whether the patient improved or declined.");
+  if(TXall.length&&!PR.length) add("a","s-primary","Interventions given but the primary was never reassessed.","Every intervention needs a documented recheck of the patient's response, starting with airway, breathing, and circulation.");
+  PR.forEach((r,i)=>{
+    const t=mins(r.time), n=i+1;
+    if(!r.time) add("a","s-primary",`Primary reassessment ${n} has no time.`,"Reassessments must be timed so changes can be matched to interventions and vitals.");
+    if(t!==null&&contact!==null&&!after(contact,t)) add("r","s-primary",`Primary reassessment ${n} is timed before patient contact.`,"A reassessment cannot occur before the initial assessment. Check your times.");
+    if(!r.trend) add("a","s-primary",`Primary reassessment ${n}: mark improved, unchanged, or worsened.`,"The point of a reassessment is the comparison. State the trend.");
+    const threat=r.airway==="Obstructed"||r.breathing==="Absent"||r.circ==="Absent"||r.bleed==="Uncontrolled";
+    if(r.trend==="Worsened"||threat){
+      const acted=t!==null&&TXall.some(x=>after(t,mins(x.time)));
+      if(!acted) add("r","s-primary",`Primary reassessment ${n} shows a problem with no intervention charted afterward.`,"When a reassessment finds deterioration or a life threat, the next entry should be what you did about it.");
+    }
+    if(r.trend==="Worsened"&&!r.note) add("a","s-primary",`Primary reassessment ${n}: describe what worsened.`,"'Worsened' alone does not tell the receiving provider which finding changed.");
+  });
+  SR.forEach((r,i)=>{
+    const n=i+1;
+    if(!r.area) add("a","s-exam",`Secondary reassessment ${n}: select a body area.`,"Each reassessment row should name the area rechecked.");
+    if(r.status==="Abnormal"&&!r.find) add("r","s-exam",`Secondary reassessment ${n} (${r.area||"area"}) marked abnormal with no description.`,"Describe the finding so the change over time is visible.");
+    if(!r.time) add("a","s-exam",`Secondary reassessment ${n} has no time.`,"Timed rechecks show how findings evolved during the call.");
+    if(r.trend==="Worsened"||r.trend==="New finding") add("g","s-exam",`Secondary reassessment ${n}: ${r.trend.toLowerCase()} – ${r.area||"area"}.`,"Make sure this change appears in your narrative, your handoff, and, if needed, your field impression.");
+  });
+  const splinted=TXall.some(x=>/Splint|Traction|Spinal motion|Sp Motion|Pelvic/i.test(x.item));
+  if(splinted&&!SR.some(r=>/extremit|Neuro|Back|Pelvis/i.test(r.area))) add("a","s-exam","Splint or spinal motion restriction applied with no PMS recheck.","Check pulse, motor, and sensation distal to the injury before and after immobilization.");
+
+  // exam
+  SYS.forEach((n,i)=>{ if(val("sys"+i)==="Abnormal"&&!val("sysT"+i)) add("r","s-exam",`${n} marked abnormal with no description.`,"'Abnormal' alone tells the receiving provider nothing. Describe what you found.");});
+  if(SYS.every((n,i)=>val("sys"+i)==="Not assessed")) add("a","s-exam","No secondary assessment documented.","Document at least a focused exam related to the chief complaint.");
+  const strokeAbn=["strFace","strArm","strSpeech"].some(k=>val(k)==="Abnormal");
+  if(strokeAbn&&!val("lkw")) add("r","s-exam","Positive stroke screen with no last known well time.","Last known well determines eligibility for time-sensitive stroke treatment and destination.");
+  if(strokeAbn&&!V.some(r=>r.bgl)) add("r","s-exam","Positive stroke screen with no blood glucose.","Hypoglycemia is a common stroke mimic and must be ruled out.");
+  if(val("avpu")&&val("avpu")!=="Alert"&&!V.some(r=>r.bgl)) add("a","s-vitals","Altered mental status with no blood glucose.","Check glucose on every altered patient. Hypoglycemia is quick to find and reversible.");
+
+  // ddx
+  const D=rows("ddx").filter(r=>r.dx);
+  if(D.length<3) add("r","s-imp",`${D.length} differential${D.length===1?"":"s"} listed – at least 3 required.`,"Differential diagnosis keeps you from locking onto the first idea and missing the dangerous alternative.");
+  D.forEach(r=>{ if(!r.for||!r.against) add("a","s-imp",`"${r.dx}": add supporting and opposing findings.`,"A differential is only useful when it is tied to assessment findings.");});
+
+  // tx
+  const TX=rows("tx").filter(r=>r.item);
+  TX.forEach(r=>{
+    if(r.cat==="Medication"||/glucose|aspirin|epi|naloxone|nitro|albuterol|dextrose|glucagon|ipratropium|charcoal|saline|nitrous/i.test(r.item)){
+      const miss=["dose","unit","route","ind","resp"].filter(k=>!r[k]).map(k=>({dose:"dose",unit:"units",route:"route",ind:"indication",resp:"response"}[k]));
+      if(miss.length) add("r","s-tx",`${r.item}: missing ${miss.join(", ")}.`,"Medication documentation requires the rights: patient, drug, dose, route, time, and your reassessment afterward.");
+      const tm=mins(r.time);
+      if(tm!==null&&!vt.some(x=>x>tm)) add("a","s-tx",`No vitals recorded after ${r.item}.`,"Reassess vitals after every medication to show its effect and catch adverse reactions.");
+      if(/nitro/i.test(r.item)&&!V.some(v=>/\d+\s*\//.test(v.bp))) add("r","s-tx","Nitroglycerin given with no documented blood pressure.","Nitroglycerin causes vasodilation. A baseline systolic BP is required before administration per protocol.");
+    }
+    if(!r.time) add("a","s-tx",`${r.item}: no time recorded.`,"Every intervention needs a time so the trend in vitals can be linked to it.");
+  });
+  TX.filter(r=>r.dose&&!r.unit&&!/Medication/.test(r.cat)).forEach(r=>add("a","s-tx",`${r.item}: dose entered without units.`,"A number without units is meaningless and is a classic medication error. Choose mcg, mg, g, mL, L, or L/min."));
+  TX.filter(r=>["Cardiovert","TCP"].includes(r.item)).forEach(r=>add("a","s-tx",`${r.item}: document who performed it.`,"Synchronized cardioversion and transcutaneous pacing are paramedic scope. EMTs and AEMTs use an AED, charted as DEFIB/AED. If your preceptor performed it, say so in the indication or narrative."));
+  TX.filter(r=>/1:10,000|1:100,000/.test(r.item)).forEach(r=>add("a","s-tx",`${r.item}: document who administered it.`,"IV epinephrine at this concentration (cardiac arrest, push-dose pressor) is paramedic scope. If the paramedic gave it, say so in the indication or narrative; it must not appear as a student-performed skill."));
+  const tx12=TX.some(r=>/12-lead/i.test(r.item)||r.item==="ECG");
+  if(tx12&&!ECG.length) add("a","s-tx","12-lead listed in interventions but no tracing uploaded.","Attach the 12-lead so your instructor can review what was transmitted.");
+  if(ECG.length&&!tx12) add("a","s-tx","12-lead uploaded but not listed in interventions.","Add \"12-lead acquired & transmitted\" with its time so it appears in the timeline of care.");
+  ECG.forEach((e,i)=>{
+    if(!e.ok) add("r","s-tx",`12-lead ${i+1}: identifiers not confirmed covered.`,"12-lead printouts show the patient's name, date of birth, and record number. Black them out and check the confirmation box. The image is left off the PDF until you do.");
+    if(!e.time) add("a","s-tx",`12-lead ${i+1}: no time acquired.`,"For suspected STEMI, the 12-lead should be obtained within 10 minutes of patient contact. The time documents that.");
+    else { const c=mins(val("tContact")), t=mins(e.time); if(c!==null&&t!==null){ let d=t-c; if(d<0) d+=1440; if(d>10&&d<720&&i===0) add("a","s-tx",`First 12-lead obtained ${d} minutes after patient contact.`,"The AHA goal for suspected ACS is a 12-lead within 10 minutes of first medical contact. If there was a delay, explain it in the narrative."); } }
+  });
+  if(!document.body.classList.contains("lvl-aemt")&&TX.some(r=>Object.values(AEMT_TX).flat().includes(r.item))) add("r","s-tx","An AEMT-level skill is charted while in EMT mode.","Stay within your scope of practice. Switch levels only if you are in the AEMT course.");
+
+  // dispo
+  if(dispo==="Refusal (AMA)"){
+    const need=["ref_ao4","ref_adult","ref_risks","ref_understands","ref_callback","ref_sign"].filter(k=>!val(k));
+    if(need.length) add("r","s-dispo",`Refusal documentation incomplete (${need.length} item${need.length>1?"s":""}).`,"Refusals are one of the highest liability calls in EMS. Capacity, informed risk, and a callback plan must be documented.");
+  }
+
+  // narrative
+  const narr=val("narrative"); const wc=narr?narr.split(/\s+/).length:0;
+  $("#wordCount").textContent=wc+" words";
+  if(wc<75) add("a","s-narr","Narrative is short.","A complete narrative usually runs well past 75 words. Include scene, findings, treatment, response, and transport.");
+  if(narr&&!/\b(denies|denied|no |negative|without)\b/i.test(narr)&&!val("pertNeg")) add("a","s-narr","No pertinent negatives found.","Pertinent negatives show you considered and ruled out related problems (e.g., 'denies chest pain').");
+  if(narr&&/\b(drunk|faking|frequent flyer|crazy|junkie)\b/i.test(narr)) add("r","s-narr","Subjective or judgmental wording in narrative.","Document objective findings (e.g., 'odor of alcohol, slurred speech') instead of labels. The PCR is a legal document.");
+
+  sigQA(add);
+
+  // render
+  const reqDone=req.length-missing.length, pct=req.length?Math.round(reqDone/req.length*100):0;
+  $("#meter").style.width=pct+"%";
+  $("#meterTxt").textContent=`${reqDone} of ${req.length} required fields complete`;
+  const reds=out.filter(o=>o.lvl==="r").length;
+  if(!out.length) out.push({lvl:"g",sec:"s-review",msg:"No issues found.",why:"Review your narrative once more, then save as PDF."});
+  $("#qaList").innerHTML=out.sort((a,b)=>"rag".indexOf(a.lvl)-"rag".indexOf(b.lvl)).map(o=>`<li class="${o.lvl}"><a href="#${o.sec}">${esc(o.msg)}</a><span class="why">${esc(o.why)}</span></li>`).join("");
+  // nav status
+  sections.forEach(s=>{const a=$(`[data-sec="${s.id}"]`);const has=out.some(o=>o.sec===s.id&&o.lvl!=="g");
+    const anyVal=Array.from(s.querySelectorAll("input,select,textarea")).some(el=>el.type==="checkbox"?el.checked:(el.value&&el.value!=="Not assessed"&&el.name!=="numPts"&&el.name!=="ageUnit"));
+    a.classList.toggle("flag",has); a.classList.toggle("done",!has&&anyVal);});
+  lastQA=out; return {out,reds};
+}
+let lastQA=[];
+
+/* ---------- Report / export ---------- */
+function buildReport(){
+  const f=collect().fields, g=k=>esc(f[k]||"");
+  const kv=(pairs)=>`<div class="kv">${pairs.map(([l,k])=>`<div><b>${l}:</b> ${g(k)||"—"}</div>`).join("")}</div>`;
+  const table=(heads,rs,keys)=>rs.length?`<table><tr>${heads.map(h=>`<th>${h}</th>`).join("")}</tr>${rs.map(r=>`<tr>${keys.map(k=>`<td>${esc(typeof k==="function"?k(r):r[k])}</td>`).join("")}</tr>`).join("")}</table>`:"<p>None recorded.</p>";
+  const V=rows("vitals"), D=rows("ddx").filter(r=>r.dx), TX=rows("tx").filter(r=>r.item);
+  const exam=SYS.map((n,i)=>f["sys"+i]!=="Not assessed"?`<div><b>${n}:</b> ${esc(f["sys"+i])}${f["sysT"+i]?" – "+esc(f["sysT"+i]):""}</div>`:"").join("")||"<p>Not documented.</p>";
+  const ppe=["gloves","eye","mask","gown"].filter(k=>f["ppe_"+k]).concat(f.ppe_other?["Other: "+(f.ppe_otherTxt||"not described")]:[]).join(", ")||"None documented";
+  $("#report").innerHTML=`
+  <div class="rhead">${LOGO_SRC?`<img src="${LOGO_SRC}" alt="">`:""}<div><div class="rcol">Dixie Technical College</div><div class="rprog">Emergency Medical Services Programs</div></div><div class="rdoc">Training Patient Care Report${isScenario()?"<br>Scenario/Skills":""}</div></div>
+  <div>${g("student")} · ${g("course")} · Case ${g("caseNo")} · ${g("date")} · Mode: ${modeLabel()}</div>
+  <h2>Run information</h2>${(()=>{const c=rows("crew").filter(r=>r.name||r.cred);return c.length?`<div><b>Crew:</b> ${c.map(r=>esc([r.name,r.cred].filter(Boolean).join(", ")+(r.role?` (${r.role}${r.stu?" – "+r.stu:""})`:""))).join("; ")}</div>`:"";})()}${kv([["Unit","unit"],["Dispatch","dispatch"],["Response","respMode"],["Location","locType"],["Dispatched","tDispatch"],["En route","tEnroute"],["On scene","tScene"],["Pt contact","tContact"],["Depart","tDepart"],["Arrive dest","tArrive"],["Transfer","tTransfer"],["In service","tService"]])}
+  <h2>Patient</h2>${wtText()?`<div><b>Weight:</b> ${esc(wtText())}</div>`:""}${kv([["ID","ptId"],["Age","age"],["Units","ageUnit"],["Gender (at birth)","sex"],["Pregnant","preg"]])}
+  <h2>Scene</h2>${kv([["Safe","sceneSafe"],["NOI/MOI","noiMoi"],["Patients","numPts"],["Resources","resources"]])}<div><b>Details:</b> ${g("moiDetail")||"—"}</div><div><b>PPE:</b> ${esc(ppe)}</div>
+  <h2>Primary assessment</h2><div><b>General impression:</b> ${g("genImp")||"—"}</div>${kv([["AVPU","avpu"],["Orientation","orient"],["Airway","airway"],["Breathing","breathing"],["Circulation","circ"],["Bleeding","bleed"],["Skin","skinPrim"],["Priority","priority"]])}
+  <div style="margin-top:6px"><b>Primary reassessments</b></div>${table(["Time","AVPU","Orient","Airway","Breathing","Circulation","Bleeding","Skin","Priority","Trend","What changed"],rows("prx").filter(r=>Object.values(r).some(Boolean)),["time","avpu","orient","airway","breathing","circ","bleed","skin","priority","trend","note"])}
+  <h2>History</h2><div><b>Chief complaint:</b> ${g("cc")||"—"}</div>${kv([["Onset","o"],["Provocation","p"],["Quality","q"],["Region/radiation","r"],["Severity","s"],["Time","t"],["Signs/symptoms","sx"],["Allergies","allergies"],["Medications","meds"],["PMH","pmh"],["Last oral","lastOral"],["Events","events"]])}<div><b>Pertinent negatives:</b> ${g("pertNeg")||"—"}</div>
+  <h2>Vital signs</h2>${table(["Time","BP","HR","RR","SpO₂","EtCO₂","BGL","Temp","GCS (E/V/M)","Pain","Skin"],V,["time","bp","hr","rr","spo2","etco2","bgl","temp",r=>r.e&&r.v&&r.m?`${+r.e+ +r.v+ +r.m} (${r.e}/${r.v}/${r.m})`:"",  "pain","skin"])}
+  <h2>Secondary assessment</h2>${f.secTime?`<div><b>Initial exam time:</b> ${g("secTime")}</div>`:""}${exam}
+  ${(f.strFace||f.strArm||f.strSpeech)?`<div><b>Stroke screen:</b> Face ${g("strFace")||"—"}, Arm ${g("strArm")||"—"}, Speech ${g("strSpeech")||"—"}, LKW ${g("lkw")||"—"}</div>`:""}
+  <div style="margin-top:6px"><b>Secondary reassessments</b></div>${table(["Time","Body area","Status","Findings","Trend"],rows("srx").filter(r=>Object.values(r).some(Boolean)),["time","area","status","find","trend"])}
+  <h2>Impression and differentials</h2><div><b>Primary impression:</b> ${g("impression")||"—"}</div>${table(["Condition","Supporting","Against"],D,["dx","for","against"])}
+  <h2>Interventions</h2>${table(["Time","Category","Intervention","Dose","Route","Indication","Response"],TX,["time","cat","item",r=>r.dose?`${r.dose} ${r.unit||""}`.trim():"","route","ind","resp"])}
+  ${ECG.length?`<h2>12-lead ECG</h2>`+ECG.map((e,i)=>`<div class="ecg-r"><div><b>12-lead ${i+1}:</b> acquired ${esc(e.time||"—")}; ${esc(e.trans||"transmission not documented")}${e.dest?" to "+esc(e.dest):""}; interpreted by ${esc(e.by||"—")}: ${esc(e.interp||"—")}</div>${e.ok?`<img src="${e.img}" alt="12-lead ${i+1}">`:"<div><i>Image withheld: patient identifiers were not confirmed covered.</i></div>"}</div>`).join(""):""}
+  ${(()=>{const any=["ioSide","ioSite","ioNeedle","ioAspirate","ioAttempts","ioOutcome","ioFluid","ioTotal"].some(k=>f[k]);return document.body.classList.contains("lvl-aemt")&&any?`<div><b>Intraosseous access:</b> ${[f.ioSide,f.ioSite].filter(Boolean).map(esc).join(" ")||"site —"}, ${g("ioNeedle")||"needle —"}, marrow aspirated ${g("ioAspirate")||"—"}, attempts ${g("ioAttempts")||"—"}, outcome ${g("ioOutcome")||"—"}, ${g("ioFluid")||"fluid —"}, total ${g("ioTotal")||"—"} mL</div>`:"";})()}
+  ${document.body.classList.contains("lvl-aemt")&&f.ivType&&f.ivType!=="None"?`<div><b>Intravenous access:</b> ${g("ivType")} ${g("ivGauge")} ${[f.ivSide,f.ivSite].filter(Boolean).map(esc).join(" ")}, attempts ${g("ivAttempts")||"—"}, outcome ${g("ivOutcome")||"—"}, ${g("ivFluid")}, total ${g("ivTotal")||"—"} mL</div>`:""}
+  <h2>Disposition</h2>${kv([["Disposition","dispo"],["Destination","dest"],["Reason","destReason"],["Priority","trPriority"],["Position","position"],["Change","trChange"],["Care to","handoffTo"]])}
+  ${f.dispo==="Refusal (AMA)"?`<div><b>Refusal checklist:</b> ${["ref_ao4","ref_adult","ref_risks","ref_understands","ref_callback","ref_sign","ref_medctrl"].map(k=>(f[k]?"☑ ":"☐ ")+form.elements[k].parentElement.textContent.trim()).join("; ")}</div>`:""}
+  <div><b>MIST:</b> M: ${g("mist_m")||"—"} | I: ${g("mist_i")||"—"} | S: ${g("mist_s")||"—"} | T: ${g("mist_t")||"—"}</div>
+  <h2>Narrative</h2><pre>${g("narrative")||"—"}</pre>
+  <div class="sign-block"><h2>Preceptor sign-off</h2>
+  ${kv([["Preceptor","precName"],["Credential","precCred"],["Cert / license #","precLic"],["Agency","precAgency"],["Date","precDate"]])}
+  <div><b>Attestation:</b> ${f.precAttest?"☑":"☐"} Reviewed with student; reflects the patient contact.</div>
+  ${sigValid()?`<img class="sig-img" src="${f.precSig}" alt="Preceptor signature"><div class="sig-line">Preceptor signature · signed ${esc(new Date(f.precSigTime).toLocaleString())}</div>`
+   :`<div class="sig-blank"></div><div class="sig-line">Preceptor signature${f.precSig?" (electronic signature invalid – chart edited after signing)":""}</div>`}
+  </div>
+  <h2>Chart check at submission</h2><ul class="qa-out">${lastQA.map(o=>`<li>${o.lvl==="r"?"✖":o.lvl==="a"?"⚠":"✔"} ${esc(o.msg)}</li>`).join("")}</ul>`;
+}
+function doPrint(){ runQA(); buildReport(); window.print(); }
+$("#printBtn").addEventListener("click",doPrint); $("#topPrint").addEventListener("click",doPrint);
+function msg(m){$("#actionMsg").textContent=m;}
+$("#dlBtn").addEventListener("click",()=>{
+  const d=collect(); const blob=new Blob([JSON.stringify(d,null,1)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download=`ePCR_${(d.fields.caseNo||"case").replace(/\W+/g,"-")}_${(d.fields.student||"student").replace(/\W+/g,"-")}.json`;
+  document.body.appendChild(a); a.click(); a.remove(); msg("Chart file downloaded. Use Open chart file to continue later.");
+});
+$("#loadFile").addEventListener("change",e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader(); r.onload=()=>{ try{restore(JSON.parse(r.result));dirty=false;drawSaved();toggleDispo();togglePPE();updWt();save();runQA();msg("Chart opened.");}catch(err){msg("That file is not a valid chart file.");} };
+  r.readAsText(file); e.target.value="";
+});
+$("#copyBtn").addEventListener("click",async()=>{
+  try{await navigator.clipboard.writeText(val("narrative"));msg("Narrative copied.");}catch(e){$("#narrative").select();msg("Press Ctrl+C / Cmd+C to copy the selected narrative.");}
+});
+$("#clearBtn").addEventListener("click",()=>{
+  if(!confirm("Start a new chart? This clears the current chart from this browser. Download the chart file first if you want to keep it.")) return;
+  try{localStorage.removeItem(KEY);}catch(e){}
+  form.reset(); sigReset(); ECG=[]; for(const k in ecgSess) delete ecgSess[k]; renderECG(); for(const k in TBL) $(TBL[k]).innerHTML=""; initRows(); toggleDispo(); togglePPE(); updWt(); runQA(); $("#saveState").textContent="New chart"; msg("");
+});
+
+/* ---------- 12-lead ECG uploads ---------- */
+let ECG=[]; const ecgSess={}; const ECG_MAX=4;
+const newId=()=>"e"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+$("#ecgAdd").addEventListener("click",()=>{ if(ECG.length>=ECG_MAX){$("#ecgMsg").textContent=`Limit of ${ECG_MAX} 12-leads per chart.`;return;} $("#ecgFile").click(); });
+$("#ecgFile").addEventListener("change",e=>{
+  const file=e.target.files[0]; e.target.value=""; if(!file) return;
+  if(!/^image\//.test(file.type)){$("#ecgMsg").textContent="Upload an image (photo or screenshot). For a PDF export, take a screenshot of the tracing.";return;}
+  const rd=new FileReader(); rd.onload=()=>{ const im=new Image(); im.onload=()=>{
+    const sc=Math.min(1,1600/im.width), c=document.createElement("canvas"); c.width=Math.round(im.width*sc); c.height=Math.round(im.height*sc);
+    c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+    const url=c.toDataURL("image/jpeg",0.8), id=newId(), base=new Image(); base.src=url;
+    ecgSess[id]={base,boxes:[]};
+    ECG.push({id,img:url,time:"",trans:"",dest:"",by:"",interp:"",ok:false});
+    renderECG(); changed(); $("#ecgMsg").textContent="Uploaded. Now cover the patient identifiers.";
+  }; im.onerror=()=>{$("#ecgMsg").textContent="That image could not be read. Try a JPG or PNG.";}; im.src=rd.result; };
+  rd.readAsDataURL(file);
+});
+function renderECG(){
+  const esca=v=>esc(v||"");
+  $("#ecgList").innerHTML=ECG.map((e,i)=>`<div class="ecg" data-id="${e.id}">
+    <b>12-lead ${i+1}</b>
+    <canvas class="ecgc" aria-label="12-lead image. Drag to cover identifiers with a black box."></canvas>
+    <div class="sigbar" style="max-width:none"><button type="button" class="btn alt" data-ecg="undo">Undo last box</button><button type="button" class="btn danger" data-ecg="del">Remove this 12-lead</button><span class="hint">Drag across the image to black out identifiers.</span></div>
+    <div class="grid w2" style="margin-top:10px">
+      <label class="f"><span>Time acquired</span><input type="time" data-e="time" value="${esca(e.time)}"></label>
+      <label class="f"><span>Transmission</span><select data-e="trans">${["","Transmitted","Not transmitted","Transmission failed"].map(o=>`<option${o===e.trans?" selected":""}>${o}</option>`).join("")}</select></label>
+      <label class="f"><span>Transmitted to</span><input type="text" data-e="dest" value="${esca(e.dest)}" placeholder="Receiving facility / medical control"></label>
+      <label class="f"><span>Interpreted by</span><select data-e="by">${["","Paramedic","Physician / medical control","Not interpreted"].map(o=>`<option${o===e.by?" selected":""}>${o}</option>`).join("")}</select></label>
+      <label class="f full"><span>Interpretation as reported to you</span><input type="text" data-e="interp" value="${esca(e.interp)}" placeholder="e.g., ST elevation II, III, aVF – STEMI alert activated"></label>
+    </div>
+    <label class="ecgok${e.ok?"":" bad"}"><input type="checkbox" data-e="ok"${e.ok?" checked":""}> I have covered the patient's name, date of birth, record number, and any other identifiers.</label>
+  </div>`).join("");
+  ECG.forEach(e=>drawECG(e.id));
+}
+function drawECG(id,preview){
+  const card=$(`.ecg[data-id="${id}"]`); if(!card) return; const cv=card.querySelector("canvas"), e=ECG.find(x=>x.id===id);
+  const ss=ecgSess[id];
+  const paint=(img)=>{ cv.width=img.naturalWidth||img.width; cv.height=img.naturalHeight||img.height; const c=cv.getContext("2d"); c.drawImage(img,0,0);
+    c.fillStyle="#000"; if(ss) ss.boxes.forEach(b=>c.fillRect(b.x,b.y,b.w,b.h)); if(preview) c.fillRect(preview.x,preview.y,preview.w,preview.h); };
+  const src=ss?ss.base:null;
+  if(src&&src.complete&&src.naturalWidth) paint(src);
+  else { const im=new Image(); im.onload=()=>{ if(!ecgSess[id]) ecgSess[id]={base:im,boxes:[]}; paint(im); }; im.src=e.img; }
+}
+function flattenECG(id){ const card=$(`.ecg[data-id="${id}"]`), e=ECG.find(x=>x.id===id); e.img=card.querySelector("canvas").toDataURL("image/jpeg",0.8); changed(); }
+let ecgDrag=null;
+const ecgPt=(cv,ev)=>{const r=cv.getBoundingClientRect();return {x:(ev.clientX-r.left)*cv.width/r.width,y:(ev.clientY-r.top)*cv.height/r.height};};
+const norm=(a,b)=>({x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),w:Math.abs(b.x-a.x),h:Math.abs(b.y-a.y)});
+$("#ecgList").addEventListener("pointerdown",ev=>{ const cv=ev.target.closest(".ecgc"); if(!cv) return; const id=cv.closest(".ecg").dataset.id; cv.setPointerCapture(ev.pointerId); ecgDrag={id,cv,a:ecgPt(cv,ev)}; });
+$("#ecgList").addEventListener("pointermove",ev=>{ if(!ecgDrag) return; drawECG(ecgDrag.id,norm(ecgDrag.a,ecgPt(ecgDrag.cv,ev))); });
+const ecgUp=ev=>{ if(!ecgDrag) return; const b=norm(ecgDrag.a,ecgPt(ecgDrag.cv,ev)), id=ecgDrag.id; ecgDrag=null;
+  if(b.w>4&&b.h>4){ ecgSess[id].boxes.push(b); drawECG(id); flattenECG(id); } else drawECG(id); };
+$("#ecgList").addEventListener("pointerup",ecgUp); $("#ecgList").addEventListener("pointercancel",ecgUp);
+$("#ecgList").addEventListener("click",ev=>{ const b=ev.target.closest("[data-ecg]"); if(!b) return; const id=b.closest(".ecg").dataset.id;
+  if(b.dataset.ecg==="del"){ if(!confirm("Remove this 12-lead?")) return; ECG=ECG.filter(x=>x.id!==id); delete ecgSess[id]; renderECG(); changed(); }
+  if(b.dataset.ecg==="undo"){ const ss=ecgSess[id]; if(ss&&ss.boxes.length){ ss.boxes.pop(); drawECG(id); setTimeout(()=>flattenECG(id),0); } else $("#ecgMsg").textContent="Boxes saved in an earlier session are permanent and can't be undone. Remove the 12-lead and upload it again to start over."; }
+});
+const ecgField=ev=>{ const k=ev.target.dataset.e; if(!k) return; const e=ECG.find(x=>x.id===ev.target.closest(".ecg").dataset.id);
+  e[k]=ev.target.type==="checkbox"?ev.target.checked:ev.target.value; if(k==="ok") ev.target.closest(".ecgok").classList.toggle("bad",!e.ok); };
+$("#ecgList").addEventListener("input",ecgField); $("#ecgList").addEventListener("change",ecgField);
+
+/* ---------- Preceptor signature ---------- */
+const pad=$("#sigPad"), ctx=pad.getContext("2d");
+let drawing=false, dirty=false;
+function sizePad(){
+  const r=pad.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+  if(!r.width) return;
+  pad.width=r.width*dpr; pad.height=r.height*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0); ctx.lineWidth=2.2; ctx.lineCap="round"; ctx.lineJoin="round"; ctx.strokeStyle="#000";
+  drawSaved();
+}
+function drawSaved(){
+  const d=$("#precSig").value; const r=pad.getBoundingClientRect();
+  ctx.clearRect(0,0,r.width,r.height);
+  if(d){const img=new Image(); img.onload=()=>ctx.drawImage(img,0,0,r.width,r.height); img.src=d;}
+  pad.classList.toggle("signed",!!d);
+}
+function pos(e){const r=pad.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
+pad.addEventListener("pointerdown",e=>{
+  if($("#precSig").value && !dirty){ /* start a fresh signature */ const r=pad.getBoundingClientRect(); ctx.clearRect(0,0,r.width,r.height); }
+  drawing=true; dirty=true; pad.setPointerCapture(e.pointerId); const [x,y]=pos(e); ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+.1,y+.1); ctx.stroke();
+});
+pad.addEventListener("pointermove",e=>{ if(!drawing) return; const [x,y]=pos(e); ctx.lineTo(x,y); ctx.stroke(); });
+function endStroke(){
+  if(!drawing) return; drawing=false;
+  $("#precSig").value=pad.toDataURL("image/png");
+  $("#precSigTime").value=new Date().toISOString();
+  $("#precSigHash").value=chartHash();
+  pad.classList.add("signed"); save(); runQA();
+}
+pad.addEventListener("pointerup",endStroke); pad.addEventListener("pointercancel",endStroke); pad.addEventListener("pointerleave",endStroke);
+function sigReset(){ ["precSig","precSigHash","precSigTime"].forEach(id=>$("#"+id).value=""); dirty=false; drawSaved(); }
+$("#sigClear").addEventListener("click",()=>{sigReset(); save(); runQA();});
+/* Fingerprint of everything except the sign-off itself, so edits after signing are detectable */
+function chartHash(){
+  const d=collect(); delete d.saved;
+  Object.keys(d.fields).forEach(k=>{ if(k.startsWith("prec")) delete d.fields[k]; });
+  const str=JSON.stringify(d); let h=5381; for(let i=0;i<str.length;i++) h=((h<<5)+h+str.charCodeAt(i))|0; return String(h>>>0);
+}
+function sigValid(){ const s=$("#precSig").value; return !!s && $("#precSigHash").value===chartHash(); }
+function sigQA(add){
+  const has=!!$("#precSig").value, valid=sigValid();
+  const st=$("#sigStatus");
+  if(!has){ add("r","s-sign","Preceptor signature missing.","The chart is not complete until the preceptor reviews it with the student and signs."); st.textContent="Sign with a finger, stylus, or mouse."; }
+  else if(!valid){ add("r","s-sign","Chart was edited after the preceptor signed.","The signature no longer matches the chart. Have the preceptor review the changes and sign again."); st.textContent="Signature invalid – chart changed after signing."; pad.classList.remove("signed"); }
+  else { st.textContent="Signed "+new Date($("#precSigTime").value).toLocaleString(); pad.classList.add("signed"); }
+  if(!val("precAttest")) add("r","s-sign","Preceptor attestation not checked.","The preceptor confirms the chart was reviewed with the student and reflects the patient contact.");
+}
+window.addEventListener("resize",sizePad);
+
+/* ---------- Init ---------- */
+function initRows(){addRow("vitals");addRow("vitals");addRow("ddx");addRow("ddx");addRow("ddx");addRow("tx");}
+let loaded=false;
+try{const s=localStorage.getItem(KEY); if(s){restore(JSON.parse(s)); loaded=true; $("#saveState").textContent="Draft restored";}}catch(e){}
+if(!loaded) initRows();
+toggleDispo(); togglePPE(); updWt(); sizePad(); runQA();
+})();
+</script>
+</body>
+</html>

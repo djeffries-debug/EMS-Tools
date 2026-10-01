@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clinical & Simulation Skills Performance Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16202c; --ink-2:#4a5767; --paper:#f4f6f8; --sheet:#ffffff; --line:#d5dbe2;
+  --blue:#1d4f91; --blue-soft:#e6eef8; --red:#b3261e; --red-soft:#fbeaea;
+  --amber:#8a5a00; --amber-soft:#fff4dc; --green:#1f6f43; --green-soft:#e5f3ea;
+  --f:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --fc:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--ink:#e6ebf1;--ink-2:#a7b3c1;--paper:#0f151c;--sheet:#17202a;--line:#2c3947;
+  --blue:#7fb0ef;--blue-soft:#1b2b40;--red:#f08b84;--red-soft:#3a1d1c;--amber:#f2c261;--amber-soft:#35290f;--green:#79d19f;--green-soft:#15301f;}
+}
+:root[data-theme="dark"]{--ink:#e6ebf1;--ink-2:#a7b3c1;--paper:#0f151c;--sheet:#17202a;--line:#2c3947;
+  --blue:#7fb0ef;--blue-soft:#1b2b40;--red:#f08b84;--red-soft:#3a1d1c;--amber:#f2c261;--amber-soft:#35290f;--green:#79d19f;--green-soft:#15301f;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 var(--f)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--blue);color:#fff;padding:10px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+header.top h1{font:700 1.2rem/1.1 var(--fc);margin:0;letter-spacing:.01em}
+header.top .sub{font-size:.85rem;opacity:.85}
+header.top nav{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+header.top nav a{color:#fff;text-decoration:none;font:600 .85rem var(--fc);padding:4px 9px;border:1px solid rgba(255,255,255,.4);border-radius:4px}
+header.top nav a:hover{background:rgba(255,255,255,.15)}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;max-width:1280px;margin:0 auto;padding:20px}
+@media (max-width:960px){.wrap{grid-template-columns:1fr}.qa{position:static!important;max-height:none!important}}
+section.card{background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+section.card>h2{font:700 1.3rem/1.2 var(--fc);margin:0 0 4px;color:var(--blue)}
+section.card>h3{font:700 1.1rem/1.2 var(--fc);margin:18px 0 6px}
+.lead{margin:0 0 12px;color:var(--ink-2);max-width:75ch}
+.hint{font-size:.85rem;color:var(--ink-2)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label.f{display:flex;flex-direction:column;gap:3px;font-weight:600;font-size:.9rem}
+label.f{display:block}
+label.f>input,label.f>select{margin-top:3px;display:block}
+label.f input.missing[data-info]{border:2px solid var(--red);background:var(--red-soft)}
+input[type=text],input[type=date],input[type=number],select,textarea{background:var(--sheet);border:1px solid var(--line);border-radius:5px;padding:7px 9px;width:100%;min-width:0}
+input:disabled,select:disabled{background:var(--paper);color:var(--ink-2)}
+.must{color:var(--red);font-weight:700}
+.policy{background:var(--blue-soft);border-left:5px solid var(--blue);border-radius:6px;padding:12px 14px;max-width:80ch}
+.policy p{margin:6px 0 0}
+.phi{background:var(--red-soft);border-left:5px solid var(--red);border-radius:6px;padding:10px 14px;margin:0 0 14px;max-width:80ch;font-size:.92rem}
+.phi b{color:var(--red)}
+.req{display:flex;align-items:center;gap:10px;margin:6px 0 12px;font:600 .95rem var(--fc)}
+.bar{flex:1;max-width:260px;height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--blue);width:0;transition:width .25s}
+.bar.met i{background:var(--green)}
+.rows{display:flex;flex-direction:column;gap:6px}
+.row{display:grid;gap:8px;align-items:end;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--sheet)}
+.row.signed{border-color:var(--green);background:var(--green-soft)}
+.row.fail{border-color:var(--red)}
+.row .num{font:700 1.05rem var(--fc);color:var(--ink-2);align-self:center;text-align:center}
+.row .num small{display:block;font:600 .62rem var(--f);color:var(--amber);letter-spacing:0}
+@media (max-width:860px){
+  header.top{position:static}
+  html{scroll-padding-top:0}
+  .wrap{padding:12px}
+  section.card{padding:14px}
+  .row{grid-template-columns:1fr 1fr!important}
+  .row .num{grid-column:1/-1;text-align:left;border-bottom:1px solid var(--line);padding-bottom:4px}
+  .row .num small{display:inline;margin-left:6px}
+  .row .sigcell{grid-column:1/-1}
+}
+.row label{display:flex;flex-direction:column;gap:2px;font-size:.75rem;font-weight:600;color:var(--ink-2)}
+.row label input,.row label select{font-size:.92rem;color:var(--ink)}
+.sigcell{display:flex;flex-direction:column;gap:3px;font-size:.75rem;min-width:0}
+.sigcell img{height:34px;max-width:150px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:3px}
+.sigcell .who{font-size:.78rem;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:5px;padding:8px 14px;font-weight:600;cursor:pointer}
+.btn.alt{background:var(--sheet);color:var(--blue);border:1px solid var(--blue)}
+.btn.danger{background:var(--sheet);color:var(--red);border:1px solid var(--red)}
+.btn.sm{padding:5px 9px;font-size:.82rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.link{background:none;border:0;color:var(--red);text-decoration:underline;padding:0;font-size:.75rem;cursor:pointer;text-align:left}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.lock{background:var(--amber-soft);color:var(--amber);border-radius:6px;padding:10px 14px;font-weight:600;margin-bottom:10px}
+.qa{position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px);align-self:start;background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:14px 16px;max-height:calc(100vh - 90px);overflow:auto}
+.qa h2{font:700 1.1rem var(--fc);margin:0 0 8px}
+.qa .prog{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:.85rem;margin-bottom:10px}
+.qa .prog span.ok{color:var(--green);font-weight:700}
+.qa ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.qa li{font-size:.84rem;border-radius:5px;padding:6px 8px;border-left:4px solid}
+.qa li.r{background:var(--red-soft);border-color:var(--red)}
+.qa li.a{background:var(--amber-soft);border-color:var(--amber)}
+.qa li.g{background:var(--green-soft);border-color:var(--green)}
+.qa li a{color:inherit}
+.meter{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:4px}
+.meter i{display:block;height:100%;background:var(--green);width:0}
+dialog{border:0;border-radius:10px;padding:0;max-width:560px;width:calc(100% - 24px);background:var(--sheet);color:var(--ink)}
+dialog::backdrop{background:rgba(10,20,30,.55)}
+.dlg{padding:18px 20px}
+.dlg h2{font:700 1.2rem var(--fc);margin:0 0 4px}
+.pad{width:100%;height:160px;background:#fff;border:2px dashed var(--line);border-radius:6px;touch-action:none;display:block;cursor:crosshair}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:.9rem;margin:10px 0}
+.chk input{margin-top:3px;width:18px;height:18px;flex:none}
+.summary{font-size:.9rem;background:var(--paper);border-radius:6px;padding:8px 10px;margin:8px 0}
+.backup{flex:1 0 100%;margin:0 -18px -10px;background:var(--amber-soft);color:var(--ink);border-bottom:3px solid var(--amber);padding:10px 18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;font-weight:600}
+.backup[hidden]{display:none}
+.backup .btn{padding:6px 12px}
+#report{display:none}
+@media print{
+  body{background:#fff;color:#000;font-size:10pt}
+  header.top,.wrap,dialog{display:none!important}
+  #report{display:block}
+  #report h1{font:700 16pt var(--fc);margin:0}
+  #report h2{font:700 12pt var(--fc);margin:14px 0 4px;border-bottom:2px solid #1d4f91;color:#1d4f91;break-after:avoid}
+  #report table{width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:6px}
+  #report th,#report td{border:1px solid #999;padding:3px 4px;text-align:left;vertical-align:middle}
+  #report th{background:#e6eef8}
+  #report tr{break-inside:avoid}
+  #report td img{height:22px;max-width:110px}
+  #report .meta td{border:0;padding:2px 8px 2px 0;font-size:10pt}
+  #report .att img{height:40px}
+  #report .blank{display:inline-block;border-bottom:1px solid #000;width:240px;height:18px}
+  @page{margin:.5in}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div><h1>Clinical & Simulation Skills Portfolio</h1><div class="sub">Student checklist & progress verification log</div></div>
+  <nav aria-label="Sections">
+    <a href="#s-info">Student</a><a href="#s-meds">Meds</a><a href="#s-iv">IV</a><a href="#s-airway">Airway</a><a href="#s-core">Exposures</a><a href="#s-assess">Assessments</a><a href="#s-attest">Attest & submit</a>
+  </nav>
+  <div class="backup" id="backupBar" role="status" hidden><span id="backupTxt"></span><button type="button" class="btn" id="backupBtn">Download portfolio file</button></div>
+</header>
+
+<div class="wrap">
+<main id="form">
+
+<section class="card" id="s-info">
+  <h2>Student information</h2>
+  <p class="hint" style="margin:0 0 10px"><span class="must">*</span> Required. The portfolio can't be saved as a PDF until these are filled in.</p>
+  <div class="grid2">
+    <label class="f">Student name <span class="must" aria-hidden="true">*</span><input type="text" data-info="name" required aria-required="true" autocomplete="name"></label>
+    <label class="f">Class / cohort <span class="must" aria-hidden="true">*</span><input type="text" data-info="cohort" required aria-required="true"></label>
+    <label class="f">Date started <span class="must" aria-hidden="true">*</span><input type="date" data-info="start" required aria-required="true"></label>
+    <label class="f">Course coordinator or lead instructor <span class="must" aria-hidden="true">*</span><input type="text" data-info="lead" required aria-required="true"></label>
+  </div>
+  <h3>Clinical performance policy</h3>
+  <div class="policy">
+    <p>Students must actively seek to maximize their clinical experience by performing as many of the required skills as possible on live patients during field ride-alongs and hospital clinical rotations.</p>
+    <p>If a student does not get the opportunity to perform these skills on live patients because of call volume or patient presentations, the requirements <b>may</b> be simulated in class under the direct guidance and evaluation of a certified instructor to verify competency.</p>
+  </div>
+  <h3>How signing works</h3>
+  <p class="lead">Fill in an entry, then hand your device to the preceptor or instructor. They tap <b>Get signature</b>, review the entry, and sign with a finger or mouse. A signed entry locks so it can't be changed afterward. Only signed entries count toward requirements, and for skills with a Pass/Fail status only signed passes count.</p>
+  <div class="phi" role="note"><b>Never enter patient names or identifying information.</b> Record only the skill, clinical details, and vitals. No names, initials, dates of birth, addresses, or record numbers anywhere in this portfolio.</div>
+</section>
+
+<section class="card" id="s-meds"></section>
+<section class="card" id="s-iv"></section>
+<section class="card" id="s-airway"></section>
+<section class="card" id="s-core"></section>
+<section class="card" id="s-assess"></section>
+
+<section class="card" id="s-attest">
+  <h2>Student attestation & veracity statement</h2>
+  <div class="policy" style="background:var(--paper);border-color:var(--ink-2)">
+    <p><b>Declaration of authenticity and accuracy</b></p>
+    <p>I hereby certify and attest that all information, clinical logs, simulation records, patient assessments, and skill performance data contained within this Clinical & Simulation Skills Performance Portfolio are true, accurate, and completely factual.</p>
+    <p>Every entry, calculation, and intervention documented herein represents actual performance executed entirely by me during designated clinical rotations and laboratory simulations. I understand that any misrepresentation, falsification, or unauthorized fabrication of data within this portfolio constitutes a severe breach of academic integrity, a violation of professional EMS conduct standards, and is subject to disciplinary action.</p>
+  </div>
+  <div id="attestBox" style="margin-top:14px"></div>
+  <h3>Submit</h3>
+  <p class="lead">To turn in: save as PDF, then upload the PDF to the Canvas assignment. The program director signs the final review on the printed copy. Download the portfolio file regularly so your work is backed up; this portfolio covers the whole course.</p>
+  <div class="actions">
+    <button type="button" class="btn" id="printBtn">Save as PDF</button>
+    <button type="button" class="btn alt" id="dlBtn">Download portfolio file</button>
+    <label class="btn alt" style="display:inline-flex;align-items:center">Open portfolio file<input type="file" id="loadFile" accept=".json,application/json" hidden></label>
+    <button type="button" class="btn danger" id="clearBtn">Start new portfolio</button>
+  </div>
+  <p class="hint" id="actionMsg" role="status" style="margin-top:10px"></p>
+</section>
+</main>
+
+<aside class="qa" aria-live="polite">
+  <h2>Portfolio check</h2>
+  <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+  <div class="hint" id="meterTxt" style="margin-bottom:10px"></div>
+  <div class="prog" id="progList"></div>
+  <ul id="qaList"></ul>
+</aside>
+</div>
+
+<dialog id="sigDlg">
+  <form method="dialog" class="dlg" id="sigForm">
+    <h2 id="sigTitle">Preceptor signature</h2>
+    <div class="summary" id="sigSummary"></div>
+    <div class="grid2">
+      <label class="f">Printed name<input type="text" id="sigName" autocomplete="off"></label>
+      <label class="f">Credential
+        <select id="sigCred"><option value="">Select…</option><option>Paramedic</option><option>AEMT</option><option>EMT</option><option>RN</option><option>MD / DO</option><option>PA / NP</option><option>Program instructor</option></select>
+      </label>
+    </div>
+    <p class="hint" style="margin:10px 0 4px">Sign below</p>
+    <canvas class="pad" id="pad" width="1000" height="320" aria-label="Signature pad"></canvas>
+    <label class="chk"><input type="checkbox" id="sigConfirm"><span id="sigConfirmTxt">I personally observed this student perform this entry and the information shown is accurate.</span></label>
+    <div class="actions">
+      <button type="button" class="btn" id="sigSave" disabled>Sign entry</button>
+      <button type="button" class="btn alt" id="sigClear">Clear pad</button>
+      <button type="button" class="btn alt" id="sigCancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="report"></div>
+
+<script>
+(function(){
+"use strict";
+const KEY="student-skills-portfolio-v1";
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const ROUTES=["PO","SL","Buccal","IN","IM","SQ","IV","IO","Nebulized / inhaled","MDI","Transdermal","Rectal","Other"];
+const GAUGES=["14 ga","16 ga","18 ga","20 ga","22 ga","24 ga"];
+const DEVICES=["i-gel","King LT","LMA","Endotracheal tube","Other"];
+
+/* Section definitions. req = signed passes/entries needed; slots = rows shown. */
+const SECTIONS=[
+ {id:"meds",host:"s-meds",title:"Medication administration",short:"Medications",req:16,slots:0,dynamic:true,addLabel:"Add medication",pf:true,setting:true,
+  intro:"Add a new entry every time you administer a medication during clinicals, field operations, or approved lab simulations, successful or not.",
+  fields:[{k:"med",label:"Medication",type:"text"},{k:"dose",label:"Dose",type:"text",dec:true,ph:"0.3"},{k:"unit",label:"Unit",type:"select",opts:["mcg","mg","g","mL","L","L/min"]},{k:"route",label:"Route",type:"select",opts:ROUTES}],
+  cols:"40px 86px 150px 1.3fr 62px 78px 1fr 80px 1.1fr"},
+ {id:"iv",host:"s-iv",title:"IV access — live patient attempts",short:"IV (live)",req:25,slots:0,dynamic:true,addLabel:"Add IV attempt",pf:true,setting:false,fixed:"Live",
+  intro:"Add a new entry for every live patient IV attempt during clinicals or field ride-alongs, successful or not. The simulated pass-off below must be signed by an instructor before live attempts can be added.",
+  fields:[{k:"gauge",label:"Gauge",type:"select",opts:GAUGES},{k:"site",label:"Site",type:"text"}],
+  cols:"58px 155px .8fr 1.3fr 90px 1.4fr"},
+ {id:"airway",host:"s-airway",title:"Advanced airway placement & ventilation",short:"Advanced airway",req:15,slots:0,dynamic:true,addLabel:"Add airway attempt",pf:true,setting:true,
+  intro:"Add a new entry every time you perform an advanced airway placement (supraglottic or endotracheal) paired with positive pressure ventilation management, successful or not.",
+  fields:[{k:"device",label:"Device",type:"select",opts:DEVICES},{k:"size",label:"Size",type:"text"}],
+  cols:"58px 100px 155px 1.2fr .6fr 90px 1.4fr"},
+ {id:"arrest",host:"s-core",group:true,title:"Category A: Cardiac arrest (mega code)",short:"Cardiac arrest",req:5,slots:8,pf:true,setting:true,
+  fields:[{k:"notes",label:"Presenting rhythm / notes",type:"text"}],cols:"58px 100px 155px 2fr 90px 1.4fr"},
+ {id:"resp",host:"s-core",group:true,title:"Category B: Respiratory distress",short:"Respiratory distress",req:5,slots:8,pf:true,setting:true,
+  fields:[{k:"notes",label:"Pathology / intervention",type:"text"}],cols:"58px 100px 155px 2fr 90px 1.4fr"},
+ {id:"ams",host:"s-core",group:true,title:"Category C: Altered mental status",short:"Altered mental status",req:5,slots:8,pf:true,setting:true,
+  fields:[{k:"notes",label:"Etiology / treatment",type:"text"}],cols:"58px 100px 155px 2fr 90px 1.4fr"},
+ {id:"trauma",host:"s-core",group:true,title:"Category D: Traumatic injuries",short:"Traumatic injuries",req:5,slots:8,pf:true,setting:true,
+  fields:[{k:"notes",label:"Mechanism / injury type",type:"text"}],cols:"58px 100px 155px 2fr 90px 1.4fr"},
+ {id:"peds",host:"s-assess",group:true,title:"Pediatric assessments (under 18)",short:"Pediatric assessments",req:10,slots:10,pf:false,setting:true,assess:[0,17],
+  fields:[{k:"age",label:"Age (yrs)",type:"number"},{k:"bp",label:"BP",type:"text",ph:"110/70"},{k:"hr",label:"HR",type:"number"},{k:"mt",label:"Medical / trauma",type:"select",opts:["Medical","Trauma"]}],
+  cols:"58px 100px 155px .7fr .9fr .7fr 1fr 1.4fr"},
+ {id:"adult",host:"s-assess",group:true,title:"Adult assessments (18–64)",short:"Adult assessments",req:20,slots:20,pf:false,setting:true,assess:[18,64],
+  fields:[{k:"age",label:"Age (yrs)",type:"number"},{k:"bp",label:"BP",type:"text",ph:"120/80"},{k:"hr",label:"HR",type:"number"},{k:"mt",label:"Medical / trauma",type:"select",opts:["Medical","Trauma"]}],
+  cols:"58px 100px 155px .7fr .9fr .7fr 1fr 1.4fr"},
+ {id:"geri",host:"s-assess",group:true,title:"Geriatric assessments (65 and older)",short:"Geriatric assessments",req:20,slots:20,pf:false,setting:true,assess:[65,120],
+  fields:[{k:"age",label:"Age (yrs)",type:"number"},{k:"bp",label:"BP",type:"text",ph:"140/86"},{k:"hr",label:"HR",type:"number"},{k:"mt",label:"Medical / trauma",type:"select",opts:["Medical","Trauma"]}],
+  cols:"58px 100px 155px .7fr .9fr .7fr 1fr 1.4fr"}
+];
+const SEC=Object.fromEntries(SECTIONS.map(s=>[s.id,s]));
+
+/* ---------- state ---------- */
+function blank(){
+  const d={v:1,info:{name:"",cohort:"",start:"",lead:""},ivPre:{date:"",sig:null},sec:{},attest:{name:"",date:"",agree:false,sig:null},coord:{sig:null,hash:""},backup:null};
+  SECTIONS.forEach(s=>{d.sec[s.id]=Array.from({length:s.dynamic?0:s.slots},()=>({}))});
+  return d;
+}
+let D=blank(), storageOK=true;
+try{const raw=localStorage.getItem(KEY); if(raw) D=merge(JSON.parse(raw));}catch(e){storageOK=false}
+function merge(x){
+  const b=blank(); if(!x||typeof x!=="object") return b;
+  Object.assign(b.info,x.info||{}); Object.assign(b.ivPre,x.ivPre||{}); Object.assign(b.attest,x.attest||{}); Object.assign(b.coord,x.coord||{}); b.backup=(x.backup&&Array.isArray(x.backup.keys))?x.backup:null;
+  SECTIONS.forEach(s=>{const arr=(x.sec&&x.sec[s.id])||[]; if(s.dynamic){b.sec[s.id]=arr.filter(r=>r&&typeof r==="object");return;} for(let i=0;i<s.slots;i++) if(arr[i]&&typeof arr[i]==="object") b.sec[s.id][i]=arr[i];});
+  return b;
+}
+let saveT;
+function save(){
+  clearTimeout(saveT);
+  saveT=setTimeout(()=>{
+    try{localStorage.setItem(KEY,JSON.stringify(D)); storageOK=true;}
+    catch(e){storageOK=false;}
+    check();
+  },250);
+}
+
+/* ---------- build sections ---------- */
+function rowHTML(s,i){
+  const r=D.sec[s.id][i]; const signed=!!r.sig;
+  const dis=signed?" disabled":"";
+  let h=`<div class="row${signed?" signed":""}${r.status==="F"?" fail":""}" id="row-${s.id}-${i}" style="grid-template-columns:${s.cols}">`;
+  h+=`<div class="num">${i+1}${!s.dynamic&&s.slots>s.req&&i===s.req-1?"<small>minimum</small>":""}</div>`;
+  if(s.setting) h+=`<label>Setting<select data-s="${s.id}" data-i="${i}" data-k="setting"${dis}><option value="">—</option><option${r.setting==="Live"?" selected":""}>Live</option><option${r.setting==="Sim"?" selected":""}>Sim</option></select></label>`;
+  h+=`<label>Date<input type="date" data-s="${s.id}" data-i="${i}" data-k="date" value="${esc(r.date)}"${dis}></label>`;
+  s.fields.forEach(f=>{
+    if(f.type==="select"){
+      h+=`<label>${f.label}<select data-s="${s.id}" data-i="${i}" data-k="${f.k}"${dis}><option value="">—</option>${f.opts.map(o=>`<option${r[f.k]===o?" selected":""}>${esc(o)}</option>`).join("")}</select></label>`;
+    }else{
+      h+=`<label>${f.label}<input type="${f.type==="number"?"number":"text"}" ${f.type==="number"?'inputmode="numeric" min="0"':""}${f.dec?' inputmode="decimal"':""} data-s="${s.id}" data-i="${i}" data-k="${f.k}" value="${esc(r[f.k])}"${f.ph?` placeholder="${f.ph}"`:""}${dis}></label>`;
+    }
+  });
+  if(s.pf) h+=`<label>Status<select data-s="${s.id}" data-i="${i}" data-k="status"${dis}><option value="">—</option><option value="P"${r.status==="P"?" selected":""}>Pass</option><option value="F"${r.status==="F"?" selected":""}>Fail</option></select></label>`;
+  h+=`<div class="sigcell">${sigCell(s,i)}${s.dynamic&&!signed?`<button type="button" class="link" data-del="${s.id}:${i}">Delete entry</button>`:""}</div></div>`;
+  return h;
+}
+function sigCell(s,i){
+  const r=D.sec[s.id][i];
+  if(r.sig) return `<img src="${r.sig.img}" alt="Signature of ${esc(r.sig.name)}"><span class="who">${esc(r.sig.name)}, ${esc(r.sig.cred)}</span><button type="button" class="link" data-unsign="${s.id}:${i}">Remove signature to edit</button>`;
+  const locked=s.id==="iv"&&!D.ivPre.sig;
+  return `<span style="font-weight:600;color:var(--ink-2)">${s.id==="iv"?"Preceptor":"Preceptor / instructor"}</span><button type="button" class="btn sm" data-sign="${s.id}:${i}" ${ready(s,i)&&!locked?"":"disabled"}>Get signature</button>`;
+}
+function ready(s,i){
+  const r=D.sec[s.id][i];
+  if(s.setting&&!r.setting) return false;
+  if(!r.date) return false;
+  if(s.pf&&!r.status) return false;
+  return s.fields.every(f=>String(r[f.k]??"").trim()!=="");
+}
+function build(){
+  const hosts={};
+  SECTIONS.forEach(s=>{(hosts[s.host]=hosts[s.host]||[]).push(s)});
+  const head={
+    "s-core":`<h2>Core clinical patient exposures</h2><p class="lead">Track diagnostic, management, and leadership exposures. A minimum of 5 signed passes is required in each category; up to 8 slots are provided.</p>`,
+    "s-assess":`<h2>Patient assessment log</h2><p class="lead">Log comprehensive physical assessments completed during clinical rotations, field ride-alongs, or approved lab simulations. Age must match the category.</p>`
+  };
+  Object.entries(hosts).forEach(([host,list])=>{
+    let h=head[host]||"";
+    list.forEach(s=>{
+      h+=s.group?`<h3 id="h-${s.id}">${s.title}</h3>`:`<h2>${s.title}</h2><p class="lead">${s.intro}</p>`;
+      if(s.id==="iv") h+=ivPreHTML();
+      h+=`<div class="req"><span id="cnt-${s.id}"></span><div class="bar" id="bar-${s.id}"><i></i></div></div>`;
+      h+=`<div class="rows" id="rows-${s.id}">${rowsHTML(s)}</div>`;
+      if(s.dynamic) h+=`<div style="margin-top:10px">${addBtn(s)}</div>`;
+    });
+    document.getElementById(host).innerHTML=h;
+  });
+  buildAttest();
+}
+function rowsHTML(s){
+  const n=D.sec[s.id].length;
+  if(s.dynamic&&!n) return `<p class="hint" style="margin:0">No entries logged yet.</p>`;
+  return Array.from({length:n},(_,i)=>rowHTML(s,i)).join("");
+}
+function addBtn(s){
+  const locked=s.id==="iv"&&!D.ivPre.sig;
+  return `<button type="button" class="btn" id="add-${s.id}" data-add="${s.id}"${locked?" disabled":""}>${s.addLabel}</button>${locked?`<span class="hint" style="margin-left:10px">Unlocks after the simulated pass-off is signed.</span>`:""}`;
+}
+function rebuildRows(sid){
+  const s=SEC[sid];
+  document.getElementById("rows-"+sid).innerHTML=rowsHTML(s);
+  if(s.dynamic) document.getElementById("add-"+sid).parentElement.innerHTML=addBtn(s);
+}
+function ivPreHTML(){
+  const p=D.ivPre;
+  return `<div id="ivPre" class="${p.sig?"":"lock"}" style="${p.sig?"border:1px solid var(--green);background:var(--green-soft);border-radius:6px;padding:10px 14px;margin-bottom:10px":""}">
+   <div style="margin-bottom:8px">Prerequisite: simulated IV pass-off ${p.sig?"completed":"required before live attempts"}</div>
+   <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end">
+    <label class="f" style="max-width:190px">Pass-off date<input type="date" data-pre="date" value="${esc(p.date)}"${p.sig?" disabled":""}></label>
+    <div class="sigcell">${p.sig?`<img src="${p.sig.img}" alt="Instructor signature"><span class="who">${esc(p.sig.name)}, ${esc(p.sig.cred)}</span><button type="button" class="link" data-unsign="ivPre">Remove signature to edit</button>`:`<button type="button" class="btn sm" data-sign="ivPre" ${p.date?"":"disabled"}>Instructor signature</button>`}</div>
+   </div></div>`;
+}
+function hashOf(){
+  const str=JSON.stringify({info:D.info,ivPre:D.ivPre,sec:D.sec,attest:D.attest});
+  let h=5381; for(let i=0;i<str.length;i++) h=((h<<5)+h+str.charCodeAt(i))>>>0;
+  return h.toString(16)+":"+str.length;
+}
+function djb(str){let h=5381; for(let i=0;i<str.length;i++) h=((h<<5)+h+str.charCodeAt(i))>>>0; return h.toString(16);}
+function entryKeys(){
+  const k=[];
+  SECTIONS.forEach(s=>D.sec[s.id].forEach(r=>{if(Object.keys(r).some(x=>String(r[x]??"").trim()!=="")) k.push(s.id+":"+djb(JSON.stringify(r)));}));
+  if(D.ivPre.date||D.ivPre.sig) k.push("ivPre:"+djb(JSON.stringify(D.ivPre)));
+  if(D.attest.sig) k.push("attest:"+djb(JSON.stringify(D.attest)));
+  if(D.coord.sig) k.push("coord:"+djb(JSON.stringify(D.coord.sig)));
+  return k;
+}
+function unbacked(){
+  const left={}; ((D.backup&&D.backup.keys)||[]).forEach(k=>left[k]=(left[k]||0)+1);
+  let n=0; entryKeys().forEach(k=>{if(left[k]) left[k]--; else n++;});
+  return n;
+}
+function backupBar(){
+  const n=unbacked(), bar=$("#backupBar");
+  if(!n){bar.hidden=true; return;}
+  const e=`${n} ${n===1?"entry":"entries"}`;
+  $("#backupTxt").textContent=D.backup
+    ? `You've added or updated ${e} since your last backup (${fmtDate(D.backup.at.slice(0,10))}). Download your portfolio file.`
+    : `You've added ${e} and haven't backed up yet. Download your portfolio file.`;
+  bar.hidden=false;
+}
+function coordChanged(){return !!(D.coord.sig&&D.coord.hash!==hashOf());}
+function coordHTML(){
+  const c=D.coord;
+  let h=`<h3>Course coordinator sign-off</h3>`;
+  if(c.sig){
+    h+=`${coordChanged()?`<div class="phi" role="alert"><b>This portfolio was changed after the coordinator signed.</b> The coordinator must remove the signature, review the changes, and sign again.</div>`:""}
+    <div class="sigcell"><img src="${c.sig.img}" alt="Course coordinator signature" style="height:48px;max-width:240px"><span class="who">${esc(c.sig.name)}, ${esc(c.sig.cred)}, signed ${fmtDate(c.sig.at.slice(0,10))}</span><button type="button" class="link" data-unsign="coord">Remove signature to edit</button></div>`;
+  }else{
+    h+=`<p class="lead">The course coordinator reviews the completed portfolio and signs here. Available after the student signs the attestation. Once signed, any later change to the portfolio is flagged.</p>
+    <button type="button" class="btn" data-sign="coord" ${D.attest.sig?"":"disabled"}>Coordinator signature</button>`;
+  }
+  return h;
+}
+function buildAttest(){
+  const a=D.attest;
+  $("#attestBox").innerHTML=`<div class="grid2">
+    <label class="f">Student printed name<input type="text" data-att="name" value="${esc(a.name)}"${a.sig?" disabled":""}></label>
+    <label class="f">Date<input type="date" data-att="date" value="${esc(a.date)}"${a.sig?" disabled":""}></label></div>
+    <label class="chk"><input type="checkbox" data-att="agree" ${a.agree?"checked":""}${a.sig?" disabled":""}><span>I have read and agree to the declaration above.</span></label>
+    <div class="sigcell">${a.sig?`<img src="${a.sig.img}" alt="Student signature" style="height:48px;max-width:240px"><button type="button" class="link" data-unsign="attest">Remove signature to edit</button>`:`<button type="button" class="btn" data-sign="attest" ${a.name&&a.date&&a.agree?"":"disabled"}>Sign attestation</button>`}</div>
+    <div id="coordBox" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">${coordHTML()}</div>`;
+}
+function refreshRow(sid,i){
+  const s=SEC[sid], el=document.getElementById(`row-${sid}-${i}`);
+  el.outerHTML=rowHTML(s,i);
+}
+function refreshSigBtn(sid,i){
+  const b=document.querySelector(`[data-sign="${sid}:${i}"]`);
+  if(b) b.disabled=!(ready(SEC[sid],i)&&!(sid==="iv"&&!D.ivPre.sig));
+  const row=document.getElementById(`row-${sid}-${i}`);
+  if(row) row.classList.toggle("fail",D.sec[sid][i].status==="F");
+}
+
+/* ---------- inputs ---------- */
+document.addEventListener("input",onField); document.addEventListener("change",onField);
+function onField(e){
+  const t=e.target;
+  if(t.dataset.info!==undefined&&t.dataset.info){D.info[t.dataset.info]=t.value; save(); return;}
+  if(t.dataset.s){D.sec[t.dataset.s][+t.dataset.i][t.dataset.k]=t.value; refreshSigBtn(t.dataset.s,+t.dataset.i); save(); return;}
+  if(t.dataset.pre){D.ivPre.date=t.value; const b=document.querySelector('[data-sign="ivPre"]'); if(b) b.disabled=!t.value; save(); return;}
+  if(t.dataset.att){D.attest[t.dataset.att]=t.type==="checkbox"?t.checked:t.value;
+    const b=document.querySelector('[data-sign="attest"]'); if(b) b.disabled=!(D.attest.name&&D.attest.date&&D.attest.agree); save(); return;}
+}
+function fillInfo(){$$("[data-info]").forEach(el=>{el.value=D.info[el.dataset.info]||""});}
+
+/* ---------- signing ---------- */
+const dlg=$("#sigDlg"), pad=$("#pad"), ctx=pad.getContext("2d");
+let target=null, drawn=false, drawing=false;
+function padReset(){ctx.fillStyle="#fff";ctx.fillRect(0,0,pad.width,pad.height);ctx.strokeStyle="#0b2a55";ctx.lineWidth=5;ctx.lineCap="round";ctx.lineJoin="round";drawn=false;updSig();}
+function pos(e){const r=pad.getBoundingClientRect();return[(e.clientX-r.left)*pad.width/r.width,(e.clientY-r.top)*pad.height/r.height];}
+pad.addEventListener("pointerdown",e=>{drawing=true;pad.setPointerCapture(e.pointerId);const[x,y]=pos(e);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+.1,y+.1);ctx.stroke();});
+pad.addEventListener("pointermove",e=>{if(!drawing)return;const[x,y]=pos(e);ctx.lineTo(x,y);ctx.stroke();if(!drawn){drawn=true;updSig();}});
+pad.addEventListener("pointerup",()=>{drawing=false});
+pad.addEventListener("pointercancel",()=>{drawing=false});
+function updSig(){
+  const needName=target!=="attest";
+  $("#sigSave").disabled=!(drawn&&$("#sigConfirm").checked&&(!needName||($("#sigName").value.trim()&&$("#sigCred").value)));
+}
+["sigName","sigCred","sigConfirm"].forEach(id=>{$("#"+id).addEventListener("input",updSig);$("#"+id).addEventListener("change",updSig)});
+$("#sigClear").onclick=padReset;
+$("#sigCancel").onclick=()=>dlg.close();
+
+document.addEventListener("click",e=>{
+  const sb=e.target.closest("[data-sign]"); if(sb){openSign(sb.dataset.sign);return;}
+  const ub=e.target.closest("[data-unsign]"); if(ub){unsign(ub.dataset.unsign);return;}
+  const ab=e.target.closest("[data-add]"); if(ab){const sid=ab.dataset.add; D.sec[sid].push({}); rebuildRows(sid); save();
+    const i=D.sec[sid].length-1, el=document.getElementById(`row-${sid}-${i}`); el.scrollIntoView({block:"center",behavior:"smooth"}); el.querySelector("input,select").focus({preventScroll:true}); return;}
+  const db=e.target.closest("[data-del]"); if(db){const[sid,i]=db.dataset.del.split(":");
+    if(!confirm(`Delete ${SEC[sid].short} #${+i+1}? Entries after it will be renumbered.`)) return;
+    D.sec[sid].splice(+i,1); rebuildRows(sid); save();}
+});
+function openSign(t){
+  target=t; padReset(); $("#sigConfirm").checked=false;
+  const isAtt=t==="attest";
+  $$("#sigForm .grid2").forEach(g=>g.style.display=isAtt?"none":"");
+  if(isAtt){
+    $("#sigTitle").textContent="Student signature";
+    $("#sigSummary").textContent=`${D.attest.name} — attestation dated ${fmtDate(D.attest.date)}`;
+    $("#sigConfirmTxt").textContent="I am the student named above and this is my signature.";
+  }else if(t==="coord"){
+    $("#sigTitle").textContent="Course coordinator sign-off";
+    let met=0; SECTIONS.forEach(s=>{if(D.sec[s.id].filter(r=>counted(s,r)).length>=s.req) met++;});
+    $("#sigSummary").innerHTML=`<b>${esc(D.info.name||"(name not entered)")}</b>, ${esc(D.info.cohort||"")}<br>${met} of ${SECTIONS.length} requirement areas met. Student attestation signed ${fmtDate(D.attest.date)}.`;
+    $("#sigConfirmTxt").textContent="I have reviewed this student's portfolio and verify the entries and requirement totals shown.";
+  }else if(t==="ivPre"){
+    $("#sigTitle").textContent="Instructor signature: simulated IV pass-off";
+    $("#sigSummary").textContent=`Student: ${D.info.name||"(name not entered)"} — simulated IV established successfully on ${fmtDate(D.ivPre.date)}`;
+    $("#sigConfirmTxt").textContent="I evaluated this student's simulated IV and verify successful competency.";
+    $("#sigCred").value="Program instructor";
+  }else{
+    const[sid,i]=t.split(":"); const s=SEC[sid], r=D.sec[sid][+i];
+    $("#sigTitle").textContent=`${s.id==="iv"?"Preceptor":"Preceptor / instructor"} signature`;
+    $("#sigSummary").innerHTML=`<b>${esc(s.title)} #${+i+1}</b><br>Student: ${esc(D.info.name||"(name not entered)")}<br>${esc(describe(s,r))}`;
+    $("#sigConfirmTxt").textContent="I personally observed this student perform this entry and the information shown is accurate.";
+  }
+  if(!isAtt&&t!=="ivPre"){$("#sigName").value="";$("#sigCred").value="";}
+  if(t==="ivPre") $("#sigName").value="";
+  updSig(); dlg.showModal();
+}
+$("#sigSave").onclick=()=>{
+  const img=shrink();
+  const sig={img,name:$("#sigName").value.trim(),cred:$("#sigCred").value,at:new Date().toISOString()};
+  if(target==="attest"){D.attest.sig={img,at:sig.at}; buildAttest();}
+  else if(target==="coord"){D.coord={sig,hash:hashOf()}; buildAttest();}
+  else if(target==="ivPre"){D.ivPre.sig=sig; rebuildIV();}
+  else{const[sid,i]=target.split(":"); D.sec[sid][+i].sig=sig; refreshRow(sid,+i);}
+  dlg.close(); save();
+};
+function unsign(t){
+  if(!confirm("Remove this signature? The entry will need to be signed again after editing.")) return;
+  if(t==="attest"){D.attest.sig=null; buildAttest();}
+  else if(t==="coord"){D.coord={sig:null,hash:""}; buildAttest();}
+  else if(t==="ivPre"){D.ivPre.sig=null; rebuildIV();}
+  else{const[sid,i]=t.split(":"); delete D.sec[sid][+i].sig; refreshRow(sid,+i);}
+  save();
+}
+function rebuildIV(){
+  document.getElementById("ivPre").outerHTML=ivPreHTML();
+  rebuildRows("iv");
+}
+function shrink(){
+  const c=document.createElement("canvas"); c.width=400; c.height=128;
+  const x=c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,400,128); x.drawImage(pad,0,0,400,128);
+  return c.toDataURL("image/png");
+}
+function describe(s,r){
+  const parts=[];
+  if(s.setting) parts.push(r.setting==="Sim"?"Simulation":"Live patient"); else if(s.fixed) parts.push("Live patient");
+  parts.push(fmtDate(r.date));
+  s.fields.forEach(f=>{if(f.k==="unit")return; parts.push(f.k==="dose"?`Dose: ${r.dose} ${r.unit||""}`:`${f.label}: ${r[f.k]}`)});
+  if(s.pf) parts.push(r.status==="P"?"PASS":"FAIL");
+  return parts.join(" | ");
+}
+function fmtDate(d){if(!d)return"";const[y,m,dd]=d.split("-");return `${m}/${dd}/${y}`;}
+
+/* ---------- checks ---------- */
+function counted(s,r){return !!r.sig&&(!s.pf||r.status==="P");}
+function check(){
+  const flags=[]; const today=new Date().toISOString().slice(0,10);
+  const f=(lvl,msg,anchor)=>flags.push({lvl,msg,anchor});
+  ["name","cohort","start","lead"].forEach(k=>{const el=document.querySelector(`[data-info="${k}"]`); if(el) el.classList.toggle("missing",!String(D.info[k]||"").trim());});
+  ["name","cohort","start","lead"].forEach(k=>{if(!String(D.info[k]||"").trim()) f("r",`Student information: ${({name:"student name",cohort:"class / cohort",start:"date started",lead:"course coordinator or lead instructor"})[k]} is missing.`,"s-info");});
+  if(!storageOK) f("a","Autosave unavailable. Use “Download portfolio file” to keep your work.","s-attest");
+  let totReq=0, totDone=0; const prog=[];
+  SECTIONS.forEach(s=>{
+    const rows=D.sec[s.id]; let n=0, fails=0;
+    rows.forEach((r,i)=>{
+      const lab=`${s.short} #${i+1}`, a=`row-${s.id}-${i}`;
+      const has=Object.keys(r).some(k=>k!=="sig"&&String(r[k]??"").trim()!=="");
+      if(counted(s,r)) n++;
+      if(r.sig&&s.pf&&r.status==="F") fails++;
+      if(r.date&&r.date>today) f("r",`${lab}: date is in the future.`,a);
+      if(r.date&&D.info.start&&r.date<D.info.start) f("a",`${lab}: date is before your course start date.`,a);
+      if(has&&!r.sig) f("a",`${lab}: entry is not signed yet${ready(s,i)?"":" and has blank fields"}.`,a);
+      if(r.sig&&r.setting==="Sim"&&r.sig.cred!=="Program instructor") f("a",`${lab}: simulated entries must be evaluated by a certified instructor, but this was signed by a ${r.sig.cred}.`,a);
+      if(s.id==="meds"&&r.dose&&!/^\s*\d*\.?\d+\s*$/.test(r.dose)) f("a",`${lab}: enter the dose as a number only (e.g., 0.3) and pick the unit from the Unit list.`,a);
+      if(s.id==="meds"&&/^\s*\./.test(r.dose||"")) f("a",`${lab}: write a leading zero before a decimal (0.5, not .5). A “naked” decimal is a recognized source of tenfold dosing errors.`,a);
+      if(s.assess){
+        const age=r.age===""||r.age==null?null:+r.age;
+        if(age!=null&&(age<s.assess[0]||age>s.assess[1])) f("r",`${lab}: age ${age} does not belong in ${s.short.toLowerCase()} (${s.assess[0]}${s.assess[1]>=120?"+":"–"+s.assess[1]}).`,a);
+        if(r.bp){const m=String(r.bp).trim().match(/^(\d{2,3})\s*\/\s*(\d{2,3}|P|p)$/);
+          if(!m) f("a",`${lab}: record BP as systolic/diastolic (e.g., 120/80, or 90/P if palpated).`,a);
+          else{const sbp=+m[1], dbp=/p/i.test(m[2])?null:+m[2];
+            if(dbp!=null&&dbp>=sbp) f("a",`${lab}: diastolic (${dbp}) is not lower than systolic (${sbp}). Recheck the reading.`,a);
+            if(sbp<50||sbp>260) f("a",`${lab}: systolic ${sbp} is outside a plausible range. Confirm it was recorded correctly.`,a);}}
+        if(r.hr!==""&&r.hr!=null){const hr=+r.hr; if(hr<20||hr>250) f("a",`${lab}: heart rate ${hr} is outside a plausible range. Confirm it was recorded correctly.`,a);}
+      }
+    });
+    if(fails) f("g",`${s.short}: ${fails} signed fail${fails>1?"s":""} logged. Fails are part of the record and don't count toward the requirement.`,`rows-${s.id}`);
+    totReq+=s.req; totDone+=Math.min(n,s.req);
+    const pct=Math.min(100,n/s.req*100);
+    const bar=document.getElementById("bar-"+s.id); if(bar){bar.querySelector("i").style.width=pct+"%"; bar.classList.toggle("met",n>=s.req);}
+    let extra="";
+    if(s.dynamic){const att=rows.filter(r=>r.sig).length; extra=att?` (${att} signed attempt${att>1?"s":""}, ${Math.round(n/att*100)}% successful)`:"";}
+    else if(s.slots>s.req) extra=` (minimum ${s.req})`;
+    const cnt=document.getElementById("cnt-"+s.id); if(cnt) cnt.textContent=`${n} of ${s.req} ${s.pf?"signed passes":"signed entries"}${extra}`;
+    prog.push(`<span><a href="#${s.group?"h-"+s.id:s.host}" style="color:inherit">${s.short}</a></span><span class="${n>=s.req?"ok":""}">${s.dynamic?n:Math.min(n,s.slots)}/${s.req}</span>`);
+  });
+  if(!D.ivPre.sig) f("a","IV: simulated pass-off must be signed by an instructor before live IV attempts can be signed.","s-iv");
+  if(!D.attest.sig) f("a","Attestation: sign the veracity statement before submitting.","s-attest");
+  else if(!D.coord.sig) f("a","Course coordinator sign-off is pending.","coordBox");
+  if(coordChanged()) f("r","Portfolio was changed after the course coordinator signed. The coordinator must review and sign again.","coordBox");
+  const cb=document.getElementById("coordBox"); if(cb&&D.coord.sig){const warn=!!cb.querySelector(".phi"); if(warn!==coordChanged()) cb.innerHTML=coordHTML();}
+  const pct=Math.round(totDone/totReq*100);
+  $("#meter").style.width=pct+"%";
+  $("#meterTxt").textContent=`${pct}% of requirements complete (${totDone} of ${totReq})`;
+  $("#progList").innerHTML=prog.join("");
+  backupBar();
+  const order={r:0,a:1,g:2}; flags.sort((x,y)=>order[x.lvl]-order[y.lvl]);
+  $("#qaList").innerHTML=flags.length?flags.slice(0,60).map(x=>`<li class="${x.lvl}"><a href="#${x.anchor}">${esc(x.msg)}</a></li>`).join("")+(flags.length>60?`<li class="a">…and ${flags.length-60} more</li>`:""):`<li class="g">No problems found.</li>`;
+}
+
+/* ---------- report / files ---------- */
+function report(){
+  const i=D.info;
+  let h=`<h1>Clinical & Simulation Skills Performance Portfolio</h1><div>Student checklist & progress verification log</div>
+  <table class="meta"><tr><td><b>Student:</b> ${esc(i.name)}</td><td><b>Class / cohort:</b> ${esc(i.cohort)}</td></tr><tr><td><b>Date started:</b> ${fmtDate(i.start)}</td><td><b>Course coordinator or lead instructor:</b> ${esc(i.lead)}</td></tr></table>`;
+  SECTIONS.forEach(s=>{
+    const n=D.sec[s.id].filter(r=>counted(s,r)).length;
+    const att=D.sec[s.id].filter(r=>r.sig).length;
+    h+=`<h2>${esc(s.title)} — ${n} of ${s.req} ${n>=s.req?"(met)":""}${s.dynamic&&att?` — ${att} signed attempts, ${Math.round(n/att*100)}% successful`:""}</h2>`;
+    if(s.id==="iv") h+=`<p>Simulated IV pass-off: ${D.ivPre.sig?`${fmtDate(D.ivPre.date)}, signed by ${esc(D.ivPre.sig.name)}, ${esc(D.ivPre.sig.cred)} <img src="${D.ivPre.sig.img}" style="height:22px;vertical-align:middle">`:"<b>not completed</b>"}</p>`;
+    h+=`<table><tr><th>#</th><th>Setting</th><th>Date</th>${s.fields.map(f=>`<th>${esc(f.label)}</th>`).join("")}${s.pf?"<th>P/F</th>":""}<th>Signed by</th><th>Signature</th></tr>`;
+    if(s.dynamic&&!D.sec[s.id].length) h+=`<tr><td colspan="${s.fields.length+6}">No entries logged.</td></tr>`;
+    D.sec[s.id].forEach((r,k)=>{
+      h+=`<tr><td>${k+1}</td><td>${s.fixed?"Live":esc(r.setting)}</td><td>${fmtDate(r.date)}</td>${s.fields.map(f=>`<td>${esc(r[f.k])}</td>`).join("")}${s.pf?`<td>${r.status||""}</td>`:""}<td>${r.sig?esc(r.sig.name+", "+r.sig.cred):""}</td><td>${r.sig?`<img src="${r.sig.img}">`:""}</td></tr>`;
+    });
+    h+=`</table>`;
+  });
+  const a=D.attest;
+  h+=`<h2>Student attestation & veracity statement</h2><p>I hereby certify and attest that all information, clinical logs, simulation records, patient assessments, and skill performance data contained within this Clinical & Simulation Skills Performance Portfolio are true, accurate, and completely factual. Every entry, calculation, and intervention documented herein represents actual performance executed entirely by me during designated clinical rotations and laboratory simulations. I understand that any misrepresentation, falsification, or unauthorized fabrication of data within this portfolio constitutes a severe breach of academic integrity, a violation of professional EMS conduct standards, and is subject to disciplinary action.</p>
+  <table class="meta att"><tr><td><b>Student signature:</b> ${a.sig?`<img src="${a.sig.img}">`:`<span class="blank"></span>`}<br>${esc(a.name)}</td><td><b>Date:</b> ${fmtDate(a.date)||'<span class="blank" style="width:120px"></span>'}</td></tr>
+  <tr><td style="padding-top:14px"><b>Course coordinator sign-off:</b> ${D.coord.sig?`<img src="${D.coord.sig.img}"><br>${esc(D.coord.sig.name)}, ${esc(D.coord.sig.cred)}${coordChanged()?"<br><b>WARNING: portfolio changed after coordinator signed</b>":""}`:`<span class="blank"></span>`}</td><td style="padding-top:14px"><b>Date:</b> ${D.coord.sig?fmtDate(D.coord.sig.at.slice(0,10)):'<span class="blank" style="width:120px"></span>'}</td></tr>
+  <tr><td style="padding-top:18px"><b>Program director / lead instructor review:</b> <span class="blank"></span></td><td style="padding-top:18px"><b>Final review date:</b> <span class="blank" style="width:120px"></span></td></tr></table>`;
+  $("#report").innerHTML=h;
+}
+$("#printBtn").onclick=()=>{
+  const miss=["name","cohort","start","lead"].filter(k=>!String(D.info[k]||"").trim());
+  if(miss.length){
+    const labels={name:"student name",cohort:"class / cohort",start:"date started",lead:"course coordinator or lead instructor"};
+    msg(`Can't save as PDF yet. Fill in the required student information: ${miss.map(k=>labels[k]).join(", ")}.`);
+    const el=document.querySelector(`[data-info="${miss[0]}"]`); el.scrollIntoView({block:"center"}); el.focus({preventScroll:true});
+    return;
+  }
+  msg(""); report(); window.print();
+};
+function download(){
+  D.backup={at:new Date().toISOString(),keys:entryKeys()};
+  try{localStorage.setItem(KEY,JSON.stringify(D));}catch(e){}
+  const blob=new Blob([JSON.stringify(D)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download=`skills-portfolio-${(D.info.name||"student").replace(/[^a-z0-9]+/gi,"-").toLowerCase()}-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  msg("Portfolio file downloaded. Upload it to your Canvas backup assignment.");
+  check();
+}
+$("#dlBtn").onclick=download; $("#backupBtn").onclick=download;
+$("#loadFile").onchange=e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const rd=new FileReader();
+  rd.onload=()=>{try{D=merge(JSON.parse(rd.result)); fillInfo(); build(); save(); check(); msg("Portfolio file opened.");}catch(err){msg("That file couldn't be opened. Choose a portfolio file downloaded from this page.");}};
+  rd.readAsText(file); e.target.value="";
+};
+$("#clearBtn").onclick=()=>{
+  if(!confirm("Start a new, empty portfolio? Everything on this page will be erased. Download your portfolio file first if you need it.")) return;
+  D=blank(); fillInfo(); build(); save(); check(); msg("New portfolio started.");
+};
+function msg(t){$("#actionMsg").textContent=t;}
+
+fillInfo(); build(); check();
+})();
+</script>
+</body>
+</html>
